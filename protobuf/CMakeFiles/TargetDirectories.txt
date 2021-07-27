@@ -1,0 +1,14 @@
+D:/protobuf/CMakeFiles/libprotobuf-lite.dir
+D:/protobuf/CMakeFiles/protoc.dir
+D:/protobuf/CMakeFiles/libprotoc.dir
+D:/protobuf/CMakeFiles/libprotobuf.dir
+D:/protobuf/CMakeFiles/gmock_main.dir
+D:/protobuf/CMakeFiles/gmock.dir
+D:/protobuf/CMakeFiles/tests.dir
+D:/protobuf/CMakeFiles/test_plugin.dir
+D:/protobuf/CMakeFiles/lite-test.dir
+D:/protobuf/CMakeFiles/lite-arena-test.dir
+D:/protobuf/CMakeFiles/check.dir
+D:/protobuf/CMakeFiles/INSTALL.dir
+D:/protobuf/CMakeFiles/ALL_BUILD.dir
+D:/protobuf/CMakeFiles/ZERO_CHECK.dir

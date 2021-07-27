@@ -1,0 +1,10 @@
+^D:\PROTOBUF\CMAKEFILES\01A52DC38A9908F625BAE8646A91429F\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/GitHub/protobuf/cmake -BD:/protobuf --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file D:/protobuf/protobuf.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
