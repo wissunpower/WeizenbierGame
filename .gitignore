@@ -10,3 +10,5 @@
 # Fortran module files
 *.mod
 *.smod
+
+.vs/

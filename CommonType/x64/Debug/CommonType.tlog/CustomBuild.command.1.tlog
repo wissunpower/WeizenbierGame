@@ -1,0 +1,4 @@
+^D:\GITHUB\WEIZENBIERGAME\PROTOTYPE\CHAT.PROTO
+"..\protobuf\Debug\protoc.exe" --proto_path="..\ProtoType;..\protobuf\src" --cpp_out=.\ ..\ProtoType\chat.proto
+^D:\GITHUB\WEIZENBIERGAME\PROTOTYPE\ADAPTER.PROTO
+"..\protobuf\Debug\protoc.exe" --proto_path="..\ProtoType;..\protobuf\src" --cpp_out=.\ ..\ProtoType\adapter.proto

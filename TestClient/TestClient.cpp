@@ -313,8 +313,6 @@ void RunClient(caf::actor_system& system, const config& cfg)
 			caf::send_as(*io_actor, chatRequestActor, chat_request_atom_v, input->str);
 		}
 	}
-
-    io_actor->send_exit(chatRequestActor, caf::exit_reason::user_shutdown);
 }
 
 
