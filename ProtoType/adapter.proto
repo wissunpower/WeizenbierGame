@@ -1,0 +1,24 @@
+
+syntax = "proto3";
+
+
+import "google/protobuf/any.proto";
+
+
+package wzbgame.message;
+
+
+enum MessageType
+{
+	UnknownMessageType =		0;
+	ChatRequest =				10;
+	ChatResponse =				11;
+	ChatNotification =			12;
+}
+
+
+message WrappedMessage
+{
+	MessageType type = 1;
+	optional google.protobuf.Any message = 2;
+}

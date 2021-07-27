@@ -1,0 +1,28 @@
+
+syntax = "proto3";
+
+
+package wzbgame.message.chat;
+
+
+message ChatRequest
+{
+	optional bytes message = 1;
+}
+
+message ChatResponse
+{
+	optional bytes message = 1;
+}
+
+message ChatNotification
+{
+	optional bytes name = 1;
+	optional bytes message = 2;
+}
+
+message ChatProtocol
+{
+	optional ChatRequest request = 1;
+	optional ChatResponse response = 2;
+}
