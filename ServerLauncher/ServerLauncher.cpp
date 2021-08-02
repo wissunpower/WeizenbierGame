@@ -13,8 +13,7 @@
 #endif
 
 CAF_PUSH_WARNINGS
-#include "chat.pb.h"
-#include "adapter.pb.h"
+#include "WeizenbierProto.h"
 CAF_POP_WARNINGS
 
 #include "patterns/Singleton.h"
@@ -29,36 +28,38 @@ CAF_BEGIN_TYPE_ID_BLOCK(server_launcher, first_custom_type_id)
 	CAF_ADD_ATOM(server_launcher, chat_notification_atom)
 	CAF_ADD_ATOM(server_launcher, chat_broadcast_atom)
 
+	CAF_ADD_ATOM(server_launcher, login_request_atom)
+
 CAF_END_TYPE_ID_BLOCK(server_launcher)
 
 
 class GlobalContext
 {
 public:
-	int RegisterActor(const caf::actor& actor)
+	int RegisterActor(caf::io::connection_handle hdl, const caf::actor& actor)
 	{
-		m_actorMap.emplace(std::make_pair(std::to_string(actor.id()), actor));
+		m_actorMap.emplace(std::make_pair(hdl, actor));
 		return 0;
 	}
 
-	std::map<std::string, caf::actor>& GetActorMap()
+	std::map<caf::io::connection_handle, caf::actor>& GetActorMap()
 	{
 		return m_actorMap;
 	}
 
-	void SetServerActor(const caf::actor* actor)
+	void SetServerActor(const caf::actor& actor)
 	{
-		serverActor = actor;
+		serverActor = std::move(actor);
 	}
 
-	const caf::actor* GetServerActor()
+	const caf::actor& GetServerActor()
 	{
 		return serverActor;
 	}
 
 private:
-	std::map<std::string, caf::actor> m_actorMap;
-	const caf::actor* serverActor;
+	std::map<caf::io::connection_handle, caf::actor> m_actorMap;
+	caf::actor serverActor;
 };
 
 auto GlobalContextInstance = Singleton<GlobalContext>::Get();
@@ -85,7 +86,24 @@ caf::behavior chatResponse(caf::event_based_actor* self)
 	{
 		return caf::make_message(chat_response_atom_v, value);
 	},
+		[=](login_request_atom, std::string stream)
+	{
+		return caf::make_message(login_request_atom_v, stream);
+},
 	};
+}
+
+
+template <typename AT>
+AT ToActorMessageArg(const std::string& stream)
+{
+	google::protobuf::Any am;
+	am.ParseFromArray(stream.data(), static_cast<int>(stream.size()));
+
+	AT message;
+	am.UnpackTo(&message);
+
+	return message;
 }
 
 
@@ -104,7 +122,7 @@ void WriteProtobufMessage(caf::io::broker* self, caf::io::connection_handle hdl,
 }
 
 
-void protobuf_io(caf::io::broker* self, caf::io::connection_handle hdl, const caf::actor& buddy)
+void TransferNetworkMessage(caf::io::broker* self, caf::io::connection_handle hdl, const caf::actor& buddy)
 {
 	print_on_exit(self, "protobuf_io");
 	caf::aout(self) << "protobuf broker started" << std::endl;
@@ -160,7 +178,7 @@ void protobuf_io(caf::io::broker* self, caf::io::connection_handle hdl, const ca
 	p.set_message(str);
 	WriteProtobufMessage(self, hdl, wzbgame::message::MessageType::ChatResponse, p);
 
-	self->send(*GlobalContextInstance->GetServerActor(), chat_broadcast_atom_v, "", str);
+	self->send(GlobalContextInstance->GetServerActor(), chat_broadcast_atom_v, "", str);
 },
 [=](chat_notification_atom, std::string name, std::string message)
 {
@@ -169,27 +187,47 @@ void protobuf_io(caf::io::broker* self, caf::io::connection_handle hdl, const ca
 	p.set_name(name);
 	p.set_message(message);
 	WriteProtobufMessage(self, hdl, wzbgame::message::MessageType::ChatNotification, p);
-}
+},
+[=](login_request_atom, std::string requestMessageStream)
+{
+	auto message = ToActorMessageArg<wzbgame::message::login::LoginRequest>(requestMessageStream);
+	
+	caf::aout(self) << "login account id : " << message.account_id() << std::endl;
+	
+	wzbgame::message::login::LoginResponse response;
+	response.set_result(wzbgame::type::result::Succeed);
+	WriteProtobufMessage(self, hdl, wzbgame::message::MessageType::LoginResponse, response);
+},
 	};
 
 	auto awaitProtobufData = caf::message_handler{
 		[=](const caf::io::new_data_msg& msg)
 	{
-		wzbgame::message::chat::ChatProtocol p;
+		wzbgame::message::WrappedMessage p;
 		p.ParseFromArray(msg.buf.data(), static_cast<int>(msg.buf.size()));
 
-		if (p.has_request())
+		switch (p.type())
 		{
-			self->send(buddy, chat_request_atom_v, p.request().message());
-		}
-		else if (p.has_response())
+		case wzbgame::message::LoginRequest:
 		{
-			self->send(buddy, chat_response_atom_v, p.response().message());
+			self->send(buddy, login_request_atom_v, p.message().SerializeAsString());
 		}
-		else
+		break;
+
+		case wzbgame::message::ChatRequest:
+		{
+			wzbgame::message::chat::ChatRequest pm;
+			p.message().UnpackTo(&pm);
+			self->send(buddy, chat_request_atom_v, pm.message());
+		}
+		break;
+
+		//case wzbgame::message::UnknownMessageType:
+		default:
 		{
 			self->quit(caf::exit_reason::user_shutdown);
 			std::cerr << "neither Request nor Response!" << std::endl;
+		}
 		}
 
 		// Receive next length prefix
@@ -236,9 +274,10 @@ caf::behavior server(caf::io::broker* self)
 
 		auto chatResponseActor = self->system().spawn(chatResponse);
 
-		auto ioActor = self->fork(protobuf_io, msg.handle, chatResponseActor);
+		auto clientActor = self->fork(TransferNetworkMessage, msg.handle, chatResponseActor);
 
-		GlobalContextInstance->RegisterActor(ioActor);
+		// std::move() 가 진행되므로 clientActor 에 대한 모든 접근은 이전에 처리해야 한다.
+		GlobalContextInstance->RegisterActor(msg.handle, clientActor);
 
 		// only accept 1 connection in our example
 		//self->quit();
@@ -283,7 +322,7 @@ void RunServer(caf::actor_system& system, const config& cfg)
 		std::cerr << "unable to spawn server : " << caf::to_string(serverActor.error()) << std::endl;
 	}
 
-	GlobalContextInstance->SetServerActor(&serverActor.value());
+	GlobalContextInstance->SetServerActor(serverActor.value());
 
 	std::cout << "*** press [enter] to quit" << std::endl;
 
