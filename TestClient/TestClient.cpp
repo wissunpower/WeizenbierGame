@@ -13,8 +13,7 @@
 #endif
 
 CAF_PUSH_WARNINGS
-#include "chat.pb.h"
-#include "adapter.pb.h"
+#include "WeizenbierProto.h"
 CAF_POP_WARNINGS
 
 
@@ -25,6 +24,9 @@ CAF_BEGIN_TYPE_ID_BLOCK(test_client, first_custom_type_id)
     CAF_ADD_ATOM(test_client, chat_request_atom)
     CAF_ADD_ATOM(test_client, chat_response_atom)
     CAF_ADD_ATOM(test_client, chat_notification_atom)
+
+    CAF_ADD_ATOM(test_client, login_request_atom)
+    CAF_ADD_ATOM(test_client, login_response_atom)
 
 CAF_END_TYPE_ID_BLOCK(test_client)
 
@@ -64,29 +66,11 @@ struct ClientInfo
 };
 
 
-caf::behavior chatRequest(caf::stateful_actor<ClientInfo>* self, std::string accountName)
+caf::behavior HandleMessage(caf::stateful_actor<ClientInfo>* self)
 {
-	print_on_exit(self, "chat request");
+	print_on_exit(self, "message handler");
 
-    const size_t num_pings = 20u;
-
-    self->state.name = accountName;
-
-	return {
-		[=](kickoff_atom, const caf::actor& chatResponse)
-	{
-		//self->send(chatResponse, chat_request_atom_v, std::to_string(1));
-
-		self->become({
-			[=](caf::pong_atom, int value) -> caf::result<caf::ping_atom, int>
-		{
-			if (++(self->state.pingCount) >= num_pings)
-			{
-				//self->quit();
-			}
-
-			return { caf::ping_atom_v, value + 1 };
-},
+    return {
 			[=](chat_response_atom, std::string str) -> caf::result<chat_request_atom, std::string>
 		{
 			return {};
@@ -99,16 +83,32 @@ caf::behavior chatRequest(caf::stateful_actor<ClientInfo>* self, std::string acc
 {
 	return { chat_notification_atom_v, str };
 },
-}
-		);
+[=](login_response_atom, int result) -> caf::result<login_response_atom, int>
+{
+    return { login_response_atom_v, result };
 },
 	};
 }
 
 
-void protobuf_io(caf::io::broker* self, caf::io::connection_handle hdl, const caf::actor& buddy)
+template <typename MT>
+void WriteProtobufMessage(caf::io::broker* self, caf::io::connection_handle hdl, wzbgame::message::MessageType type, MT data)
 {
-    print_on_exit(self, "protobuf_io");
+    wzbgame::message::WrappedMessage wm;
+    wm.set_type(type);
+    wm.mutable_message()->PackFrom(data);
+
+    auto buf = wm.SerializeAsString();
+    auto bufSize = htonl(static_cast<uint32_t>(buf.size()));
+    self->write(hdl, sizeof(uint32_t), &bufSize);
+    self->write(hdl, buf.size(), buf.data());
+    self->flush(hdl);
+}
+
+
+void TransferNetworkMessage(caf::io::broker* self, caf::io::connection_handle hdl, const caf::actor& buddy)
+{
+    print_on_exit(self, "network message transfer");
     caf::aout(self) << "protobuf broker started" << std::endl;
 
     self->monitor(buddy);
@@ -142,9 +142,9 @@ void protobuf_io(caf::io::broker* self, caf::io::connection_handle hdl, const ca
 [=](chat_request_atom, std::string str)
 {
     caf::aout(self) << "'request' " << str << std::endl;
-    wzbgame::message::chat::ChatProtocol p;
-    p.mutable_request()->set_message(str);
-    write(p);
+    wzbgame::message::chat::ChatRequest p;
+    p.set_message(str);
+    WriteProtobufMessage(self, hdl, wzbgame::message::MessageType::ChatRequest, p);
 },
 [=](chat_response_atom, std::string str)
 {
@@ -156,6 +156,18 @@ void protobuf_io(caf::io::broker* self, caf::io::connection_handle hdl, const ca
 [=](chat_notification_atom, std::string str)
 {
     caf::aout(self) << "'notification' " << str << std::endl;
+},
+[=](login_request_atom, std::string accountID)
+{
+    caf::aout(self) << "Try Login -> Account ID : " << accountID << std::endl;
+
+    wzbgame::message::login::LoginRequest p;
+    p.set_account_id(accountID);
+    WriteProtobufMessage(self, hdl, wzbgame::message::MessageType::LoginRequest, p);
+},
+[=](login_response_atom, int result)
+{
+    caf::aout(self) << "Login Result : " << result << std::endl;
 },
     };
 
@@ -188,6 +200,14 @@ void protobuf_io(caf::io::broker* self, caf::io::connection_handle hdl, const ca
             wzbgame::message::chat::ChatNotification pm;
             p.message().UnpackTo(&pm);
             self->send(buddy, chat_notification_atom_v, pm.message());
+        }
+        break;
+
+        case wzbgame::message::LoginResponse:
+        {
+            wzbgame::message::login::LoginResponse pm;
+            p.message().UnpackTo(&pm);
+            self->send(buddy, login_response_atom_v, pm.result());
         }
         break;
 
@@ -252,6 +272,20 @@ void RunClient(caf::actor_system& system, const config& cfg)
 {
     std::cout << "run test client" << std::endl;
 
+    auto messageHandleActor = system.spawn(HandleMessage);
+    auto messageTransferActor = system.middleman().spawn_client(TransferNetworkMessage, cfg.host, cfg.port, messageHandleActor);
+
+    if (!messageTransferActor)
+    {
+        std::cout << "cannot connect to " << cfg.host << " at port" << cfg.port << " : " << caf::to_string(messageTransferActor.error()) << std::endl;
+        return;
+    }
+
+
+    // 임시 코드, messageTransferActor 코드를 먼저 실행하며 std 출력을 조정하기 위함.
+    std::this_thread::sleep_for(std::chrono::milliseconds{ 1 });
+
+
     std::string accountName;
 
     if (auto nameByConfig = caf::get_if<std::string>(&cfg, "name"))
@@ -270,19 +304,10 @@ void RunClient(caf::actor_system& system, const config& cfg)
         }
     }
 
-    auto chatRequestActor = system.spawn(chatRequest, accountName);
-    auto io_actor = system.middleman().spawn_client(protobuf_io, cfg.host, cfg.port, chatRequestActor);
-
-    if (!io_actor)
-    {
-        std::cout << "cannot connect to " << cfg.host << " at port" << cfg.port << " : " << caf::to_string(io_actor.error()) << std::endl;
-        return;
-    }
-
-    caf::send_as(*io_actor, chatRequestActor, kickoff_atom_v, *io_actor);
+    caf::send_as(*messageTransferActor, *messageTransferActor, login_request_atom_v, accountName);
 
 
-	std::cout << "*** starting client, type '/help' for a list of commands\n";
+    std::cout << "*** starting client, type '/help' for a list of commands\n";
 	std::istream_iterator<ChatMessage> eof;
 	std::vector<std::string> words;
 
@@ -310,7 +335,7 @@ void RunClient(caf::actor_system& system, const config& cfg)
 		}
 		else
 		{
-			caf::send_as(*io_actor, chatRequestActor, chat_request_atom_v, input->str);
+			caf::send_as(*messageTransferActor, messageHandleActor, chat_request_atom_v, input->str);
 		}
 	}
 }
