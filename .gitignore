@@ -12,3 +12,8 @@
 *.smod
 
 .vs/
+*.user
+CommonType/x64/Debug/*
+ServerLauncher/x64/Debug/*
+ServerUtility/x64/Debug/*
+TestClient/x64/Debug/*
