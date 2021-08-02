@@ -1,0 +1,12 @@
+
+syntax = "proto3";
+
+
+package wzbgame.type.result;
+
+
+enum ResultType
+{
+	Succeed					=			0;
+	UnknownFailure			=			1;
+}

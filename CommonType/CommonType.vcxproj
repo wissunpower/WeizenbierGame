@@ -160,18 +160,23 @@
     <ClInclude Include="adapter.pb.h" />
     <ClInclude Include="chat.pb.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="login.pb.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="result.pb.h" />
+    <ClInclude Include="WeizenbierProto.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="adapter.pb.cc" />
     <ClCompile Include="chat.pb.cc" />
     <ClCompile Include="CommonType.cpp" />
+    <ClCompile Include="login.pb.cc" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="result.pb.cc" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\ProtoType\chat.proto">
@@ -182,6 +187,20 @@
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\ProtoType\adapter.proto">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"..\protobuf\Debug\protoc.exe" --proto_path="..\ProtoType;..\protobuf\src" --cpp_out=.\ %(Identity)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).pb.h;%(Filename).pb.cc;</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\ProtoType\login.proto">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"..\protobuf\Debug\protoc.exe" --proto_path="..\ProtoType;..\protobuf\src" --cpp_out=.\ %(Identity)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).pb.h;%(Filename).pb.cc;</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\ProtoType\result.proto">
       <FileType>Document</FileType>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"..\protobuf\Debug\protoc.exe" --proto_path="..\ProtoType;..\protobuf\src" --cpp_out=.\ %(Identity)</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).pb.h;%(Filename).pb.cc;</Outputs>

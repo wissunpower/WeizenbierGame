@@ -11,9 +11,13 @@ package wzbgame.message;
 enum MessageType
 {
 	UnknownMessageType =		0;
+
 	ChatRequest =				10;
 	ChatResponse =				11;
 	ChatNotification =			12;
+
+	LoginRequest =				20;
+	LoginResponse =				21;
 }
 
 

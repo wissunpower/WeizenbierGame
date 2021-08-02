@@ -1,0 +1,16 @@
+
+syntax = "proto3";
+
+
+package wzbgame.message.login;
+
+
+message LoginRequest
+{
+	optional bytes account_id = 1;
+}
+
+message LoginResponse
+{
+	optional int32 Result = 1;
+}

@@ -30,6 +30,15 @@
     <ClInclude Include="adapter.pb.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="login.pb.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="result.pb.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="WeizenbierProto.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CommonType.cpp">
@@ -44,12 +53,24 @@
     <ClCompile Include="adapter.pb.cc">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="login.pb.cc">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="result.pb.cc">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\ProtoType\chat.proto">
       <Filter>ProtoType</Filter>
     </CustomBuild>
     <CustomBuild Include="..\ProtoType\adapter.proto">
+      <Filter>ProtoType</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ProtoType\login.proto">
+      <Filter>ProtoType</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ProtoType\result.proto">
       <Filter>ProtoType</Filter>
     </CustomBuild>
   </ItemGroup>

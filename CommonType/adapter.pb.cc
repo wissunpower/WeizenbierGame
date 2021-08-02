@@ -62,17 +62,17 @@ const char descriptor_table_protodef_adapter_2eproto[] PROTOBUF_SECTION_VARIABLE
   "/protobuf/any.proto\"t\n\016WrappedMessage\022*\n"
   "\004type\030\001 \001(\0162\034.wzbgame.message.MessageTyp"
   "e\022*\n\007message\030\002 \001(\0132\024.google.protobuf.Any"
-  "H\000\210\001\001B\n\n\010_message*^\n\013MessageType\022\026\n\022Unkn"
-  "ownMessageType\020\000\022\017\n\013ChatRequest\020\n\022\020\n\014Cha"
-  "tResponse\020\013\022\024\n\020ChatNotification\020\014b\006proto"
-  "3"
+  "H\000\210\001\001B\n\n\010_message*\203\001\n\013MessageType\022\026\n\022Unk"
+  "nownMessageType\020\000\022\017\n\013ChatRequest\020\n\022\020\n\014Ch"
+  "atResponse\020\013\022\024\n\020ChatNotification\020\014\022\020\n\014Lo"
+  "ginRequest\020\024\022\021\n\rLoginResponse\020\025b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_adapter_2eproto_deps[1] = {
   &::descriptor_table_google_2fprotobuf_2fany_2eproto,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_adapter_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_adapter_2eproto = {
-  false, false, 281, descriptor_table_protodef_adapter_2eproto, "adapter.proto", 
+  false, false, 319, descriptor_table_protodef_adapter_2eproto, "adapter.proto", 
   &descriptor_table_adapter_2eproto_once, descriptor_table_adapter_2eproto_deps, 1, 1,
   schemas, file_default_instances, TableStruct_adapter_2eproto::offsets,
   file_level_metadata_adapter_2eproto, file_level_enum_descriptors_adapter_2eproto, file_level_service_descriptors_adapter_2eproto,
@@ -95,6 +95,8 @@ bool MessageType_IsValid(int value) {
     case 10:
     case 11:
     case 12:
+    case 20:
+    case 21:
       return true;
     default:
       return false;
