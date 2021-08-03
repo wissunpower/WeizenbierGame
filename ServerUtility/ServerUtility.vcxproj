@@ -123,14 +123,16 @@
       </SDLCheck>
       <PreprocessorDefinitions>_DEBUG;SERVERUTILITY_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>..\caf\libcaf_core;..\caf\libcaf_io;..\protobuf\src;..\CommonType;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
+      <AdditionalDependencies>..\caf\libcaf_core\$(Configuration)\caf_core.lib;..\caf\libcaf_io\$(Configuration)\caf_io.lib;ws2_32.lib;..\$(IntDir)CommonType.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -153,9 +155,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="config\ActorSystemConfig.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="helper\Convert.h" />
+    <ClInclude Include="helper\IO.h" />
     <ClInclude Include="patterns\Singleton.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="ServerUtility.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />

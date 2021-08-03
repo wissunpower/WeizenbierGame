@@ -16,7 +16,7 @@ CAF_PUSH_WARNINGS
 #include "WeizenbierProto.h"
 CAF_POP_WARNINGS
 
-#include "patterns/Singleton.h"
+#include "ServerUtility.h"
 
 
 CAF_BEGIN_TYPE_ID_BLOCK(server_launcher, first_custom_type_id)
@@ -91,34 +91,6 @@ caf::behavior chatResponse(caf::event_based_actor* self)
 		return caf::make_message(login_request_atom_v, stream);
 },
 	};
-}
-
-
-template <typename AT>
-AT ToActorMessageArg(const std::string& stream)
-{
-	google::protobuf::Any am;
-	am.ParseFromArray(stream.data(), static_cast<int>(stream.size()));
-
-	AT message;
-	am.UnpackTo(&message);
-
-	return message;
-}
-
-
-template <typename MT>
-void WriteProtobufMessage(caf::io::broker* self, caf::io::connection_handle hdl, wzbgame::message::MessageType type, MT data)
-{
-	wzbgame::message::WrappedMessage wm;
-	wm.set_type(type);
-	wm.mutable_message()->PackFrom(data);
-
-	auto buf = wm.SerializeAsString();
-	auto bufSize = htonl(static_cast<uint32_t>(buf.size()));
-	self->write(hdl, sizeof(uint32_t), &bufSize);
-	self->write(hdl, buf.size(), buf.data());
-	self->flush(hdl);
 }
 
 
@@ -297,21 +269,7 @@ caf::behavior server(caf::io::broker* self)
 }
 
 
-class config : public caf::actor_system_config
-{
-public:
-	uint16_t port = 0;
-	std::string host = "localhost";
-
-	config()
-	{
-		opt_group{ custom_options_, "global" }
-		.add(port, "port,p", "set port");
-	}
-};
-
-
-void RunServer(caf::actor_system& system, const config& cfg)
+void RunServer(caf::actor_system& system, const ActorSystemConfig& cfg)
 {
 	std::cout << "run server" << std::endl;
 
@@ -332,7 +290,7 @@ void RunServer(caf::actor_system& system, const config& cfg)
 }
 
 
-void caf_main(caf::actor_system& system, const config& cfg)
+void caf_main(caf::actor_system& system, const ActorSystemConfig& cfg)
 {
 	RunServer(system, cfg);
 }

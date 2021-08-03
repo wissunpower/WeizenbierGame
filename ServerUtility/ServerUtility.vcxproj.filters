@@ -16,6 +16,12 @@
     <Filter Include="헤더 파일\patterns">
       <UniqueIdentifier>{52eaff8f-5d63-4b91-99a4-8399a888743f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="헤더 파일\config">
+      <UniqueIdentifier>{84beb7d0-38e6-4f60-8b4b-4137bee301c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\helper">
+      <UniqueIdentifier>{055cc2be-18a4-4151-b2b8-27ceb3b74314}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -26,6 +32,18 @@
     </ClInclude>
     <ClInclude Include="patterns\Singleton.h">
       <Filter>헤더 파일\patterns</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerUtility.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="helper\Convert.h">
+      <Filter>헤더 파일\helper</Filter>
+    </ClInclude>
+    <ClInclude Include="helper\IO.h">
+      <Filter>헤더 파일\helper</Filter>
+    </ClInclude>
+    <ClInclude Include="config\ActorSystemConfig.h">
+      <Filter>헤더 파일\config</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
