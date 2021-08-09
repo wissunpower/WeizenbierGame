@@ -21,12 +21,12 @@ CAF_POP_WARNINGS
 
 CAF_BEGIN_TYPE_ID_BLOCK(server_launcher, first_custom_type_id)
 
-	CAF_ADD_ATOM(server_launcher, kickoff_atom)
+	CAF_ADD_ATOM(server_launcher, send_to_client_atom)
+	CAF_ADD_ATOM(server_launcher, broadcast_atom)
+	CAF_ADD_ATOM(server_launcher, broadcast_notification_atom)
+	CAF_ADD_ATOM(server_launcher, send_and_broadcast_atom)
 
 	CAF_ADD_ATOM(server_launcher, chat_request_atom)
-	CAF_ADD_ATOM(server_launcher, chat_response_atom)
-	CAF_ADD_ATOM(server_launcher, chat_notification_atom)
-	CAF_ADD_ATOM(server_launcher, chat_broadcast_atom)
 
 	CAF_ADD_ATOM(server_launcher, login_request_atom)
 
@@ -82,14 +82,36 @@ caf::behavior chatResponse(caf::event_based_actor* self)
 	print_on_exit(self, "chat response");
 
 	return {
-		[=](chat_request_atom, std::string value)
+		[=](chat_request_atom, std::string stream)
 	{
-		return caf::make_message(chat_response_atom_v, value);
+		auto message = ToActorMessageArg<wzbgame::message::chat::ChatRequest>(stream);
+		auto chatMessage = message.message();
+
+		std::cout << "'response' " << chatMessage << std::endl;
+
+		wzbgame::message::chat::ChatResponse response;
+		response.set_message(chatMessage);
+		wzbgame::message::WrappedMessage responseWrapped = MakeWrappedMessage(wzbgame::message::MessageType::ChatResponse, response);
+
+		wzbgame::message::chat::ChatNotification notification;
+		//notification.set_name(name);
+		notification.set_message(chatMessage);
+		wzbgame::message::WrappedMessage notificationWrapped = MakeWrappedMessage(wzbgame::message::MessageType::ChatNotification, notification);
+		
+		return caf::make_message(send_and_broadcast_atom_v, responseWrapped.SerializeAsString(), notificationWrapped.SerializeAsString());
 	},
 		[=](login_request_atom, std::string stream)
 	{
-		return caf::make_message(login_request_atom_v, stream);
-},
+		auto message = ToActorMessageArg<wzbgame::message::login::LoginRequest>(stream);
+
+		std::cout << "login account id : " << message.account_id() << std::endl;
+
+		wzbgame::message::login::LoginResponse response;
+		response.set_result(wzbgame::type::result::Succeed);
+		wzbgame::message::WrappedMessage wrapped = MakeWrappedMessage(wzbgame::message::MessageType::LoginResponse, response);
+
+		return caf::make_message(send_to_client_atom_v, wrapped.SerializeAsString());
+	},
 	};
 }
 
@@ -111,21 +133,11 @@ void TransferNetworkMessage(caf::io::broker* self, caf::io::connection_handle hd
 	}
 	);
 
-	auto write = [=](const wzbgame::message::chat::ChatProtocol& p)
+	auto sendToClient = [=](const std::string& messageStream)
 	{
-		std::string buf = p.SerializeAsString();
-		auto s = htonl(static_cast<uint32_t>(buf.size()));
-		self->write(hdl, sizeof(uint32_t), &s);
-		self->write(hdl, buf.size(), buf.data());
-		self->flush(hdl);
-	};
-
-	auto writeNotification = [=](const wzbgame::message::chat::ChatNotification& p)
-	{
-		std::string buf = p.SerializeAsString();
-		auto s = htonl(static_cast<uint32_t>(buf.size()));
-		self->write(hdl, sizeof(uint32_t), &s);
-		self->write(hdl, buf.size(), buf.data());
+		auto bufSize = htonl(static_cast<uint32_t>(messageStream.size()));
+		self->write(hdl, sizeof(uint32_t), &bufSize);
+		self->write(hdl, messageStream.size(), messageStream.data());
 		self->flush(hdl);
 	};
 
@@ -135,41 +147,25 @@ void TransferNetworkMessage(caf::io::broker* self, caf::io::connection_handle hd
 		caf::aout(self) << "connection closed" << std::endl;
 		self->send_exit(buddy, caf::exit_reason::remote_link_unreachable);
 		self->quit(caf::exit_reason::remote_link_unreachable);
-},
-[=](chat_request_atom, std::string str)
-{
-	caf::aout(self) << "'request' " << str << std::endl;
-	wzbgame::message::chat::ChatRequest p;
-	p.set_message(str);
-	WriteProtobufMessage(self, hdl, wzbgame::message::MessageType::ChatRequest, p);
-},
-[=](chat_response_atom, std::string str)
-{
-	caf::aout(self) << "'response' " << str << std::endl;
-	wzbgame::message::chat::ChatResponse p;
-	p.set_message(str);
-	WriteProtobufMessage(self, hdl, wzbgame::message::MessageType::ChatResponse, p);
-
-	self->send(GlobalContextInstance->GetServerActor(), chat_broadcast_atom_v, "", str);
-},
-[=](chat_notification_atom, std::string name, std::string message)
-{
-	//caf::aout(self) << "'notification' -> name : " << name << ", message : " << message << std::endl;
-	wzbgame::message::chat::ChatNotification p;
-	p.set_name(name);
-	p.set_message(message);
-	WriteProtobufMessage(self, hdl, wzbgame::message::MessageType::ChatNotification, p);
-},
-[=](login_request_atom, std::string requestMessageStream)
-{
-	auto message = ToActorMessageArg<wzbgame::message::login::LoginRequest>(requestMessageStream);
-	
-	caf::aout(self) << "login account id : " << message.account_id() << std::endl;
-	
-	wzbgame::message::login::LoginResponse response;
-	response.set_result(wzbgame::type::result::Succeed);
-	WriteProtobufMessage(self, hdl, wzbgame::message::MessageType::LoginResponse, response);
-},
+	},
+		[=](send_to_client_atom, std::string messageStream)
+	{
+		sendToClient(messageStream);
+	},
+		[=](broadcast_atom, std::string broadcastStream)
+	{
+		self->send(GlobalContextInstance->GetServerActor(), broadcast_atom_v, broadcastStream);
+	},
+		[=](broadcast_notification_atom, std::string notificationStream)
+	{
+		sendToClient(notificationStream);
+	},
+		[=](send_and_broadcast_atom, std::string responseStream, std::string broadcastStream)
+	{
+		sendToClient(responseStream);
+		
+		self->send(GlobalContextInstance->GetServerActor(), broadcast_atom_v, broadcastStream);
+	},
 	};
 
 	auto awaitProtobufData = caf::message_handler{
@@ -188,9 +184,7 @@ void TransferNetworkMessage(caf::io::broker* self, caf::io::connection_handle hd
 
 		case wzbgame::message::ChatRequest:
 		{
-			wzbgame::message::chat::ChatRequest pm;
-			p.message().UnpackTo(&pm);
-			self->send(buddy, chat_request_atom_v, pm.message());
+			self->send(buddy, chat_request_atom_v, p.message().SerializeAsString());
 		}
 		break;
 
@@ -255,17 +249,17 @@ caf::behavior server(caf::io::broker* self)
 		//self->quit();
 	};
 
-	auto chatBroadcastHandler = [=](chat_broadcast_atom, std::string name, std::string message)
+	auto broadcastHandler = [=](broadcast_atom, std::string stream)
 	{
 		auto actorMap = GlobalContextInstance->GetActorMap();
 
 		for (const auto& clientActorInfo : GlobalContextInstance->GetActorMap())
 		{
-			self->send(clientActorInfo.second, chat_notification_atom_v, name, message);
+			self->send(clientActorInfo.second, broadcast_notification_atom_v, stream);
 		}
 	};
 
-	return { newConnectionHandler, chatBroadcastHandler, };
+	return { newConnectionHandler, broadcastHandler, };
 }
 
 

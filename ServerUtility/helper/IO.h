@@ -17,3 +17,13 @@ void WriteProtobufMessage(caf::io::broker* self, caf::io::connection_handle hdl,
 	self->write(hdl, buf.size(), buf.data());
 	self->flush(hdl);
 }
+
+template <typename MT>
+wzbgame::message::WrappedMessage MakeWrappedMessage(wzbgame::message::MessageType type, MT data)
+{
+	wzbgame::message::WrappedMessage wrapped;
+	wrapped.set_type(type);
+	wrapped.mutable_message()->PackFrom(data);
+
+	return wrapped;
+}
