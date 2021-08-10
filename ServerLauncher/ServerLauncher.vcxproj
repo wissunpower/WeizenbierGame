@@ -143,7 +143,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ClientState.cpp" />
     <ClCompile Include="ServerLauncher.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CAF_Atom.h" />
+    <ClInclude Include="ClientState.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

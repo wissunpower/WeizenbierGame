@@ -18,19 +18,9 @@ CAF_POP_WARNINGS
 
 #include "ServerUtility.h"
 
+#include "ClientState.h"
 
-CAF_BEGIN_TYPE_ID_BLOCK(server_launcher, first_custom_type_id)
-
-	CAF_ADD_ATOM(server_launcher, send_to_client_atom)
-	CAF_ADD_ATOM(server_launcher, broadcast_atom)
-	CAF_ADD_ATOM(server_launcher, broadcast_notification_atom)
-	CAF_ADD_ATOM(server_launcher, send_and_broadcast_atom)
-
-	CAF_ADD_ATOM(server_launcher, chat_request_atom)
-
-	CAF_ADD_ATOM(server_launcher, login_request_atom)
-
-CAF_END_TYPE_ID_BLOCK(server_launcher)
+#include "CAF_Atom.h"
 
 
 class GlobalContext
@@ -74,45 +64,6 @@ void print_on_exit(caf::scheduled_actor* self, const std::string& name)
 		caf::aout(self) << name << " exited : " << caf::to_string(reason) << std::endl;
 	}
 	);
-}
-
-
-caf::behavior chatResponse(caf::event_based_actor* self)
-{
-	print_on_exit(self, "chat response");
-
-	return {
-		[=](chat_request_atom, std::string stream)
-	{
-		auto message = ToActorMessageArg<wzbgame::message::chat::ChatRequest>(stream);
-		auto chatMessage = message.message();
-
-		std::cout << "'response' " << chatMessage << std::endl;
-
-		wzbgame::message::chat::ChatResponse response;
-		response.set_message(chatMessage);
-		wzbgame::message::WrappedMessage responseWrapped = MakeWrappedMessage(wzbgame::message::MessageType::ChatResponse, response);
-
-		wzbgame::message::chat::ChatNotification notification;
-		//notification.set_name(name);
-		notification.set_message(chatMessage);
-		wzbgame::message::WrappedMessage notificationWrapped = MakeWrappedMessage(wzbgame::message::MessageType::ChatNotification, notification);
-		
-		return caf::make_message(send_and_broadcast_atom_v, responseWrapped.SerializeAsString(), notificationWrapped.SerializeAsString());
-	},
-		[=](login_request_atom, std::string stream)
-	{
-		auto message = ToActorMessageArg<wzbgame::message::login::LoginRequest>(stream);
-
-		std::cout << "login account id : " << message.account_id() << std::endl;
-
-		wzbgame::message::login::LoginResponse response;
-		response.set_result(wzbgame::type::result::Succeed);
-		wzbgame::message::WrappedMessage wrapped = MakeWrappedMessage(wzbgame::message::MessageType::LoginResponse, response);
-
-		return caf::make_message(send_to_client_atom_v, wrapped.SerializeAsString());
-	},
-	};
 }
 
 
@@ -238,12 +189,12 @@ caf::behavior server(caf::io::broker* self)
 	{
 		caf::aout(self) << "server accepted new connection" << std::endl;
 
-		auto chatResponseActor = self->system().spawn(chatResponse);
+		auto clientActor = self->system().spawn<ClientActor>();
 
-		auto clientActor = self->fork(TransferNetworkMessage, msg.handle, chatResponseActor);
+		auto brokerActor = self->fork(TransferNetworkMessage, msg.handle, clientActor);
 
 		// std::move() 가 진행되므로 clientActor 에 대한 모든 접근은 이전에 처리해야 한다.
-		GlobalContextInstance->RegisterActor(msg.handle, clientActor);
+		GlobalContextInstance->RegisterActor(msg.handle, brokerActor);
 
 		// only accept 1 connection in our example
 		//self->quit();
