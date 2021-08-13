@@ -144,11 +144,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ClientState.cpp" />
+    <ClCompile Include="handler\ChatHandler.cpp" />
+    <ClCompile Include="handler\LoginHandler.cpp" />
+    <ClCompile Include="model\User.cpp" />
     <ClCompile Include="ServerLauncher.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CAF_Atom.h" />
     <ClInclude Include="ClientState.h" />
+    <ClInclude Include="handler\ChatHandler.h" />
+    <ClInclude Include="handler\LoginHandler.h" />
+    <ClInclude Include="interface\IMessageHandler.h" />
+    <ClInclude Include="model\User.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

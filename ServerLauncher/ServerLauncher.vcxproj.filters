@@ -13,6 +13,21 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="헤더 파일\handler">
+      <UniqueIdentifier>{8af7281a-9830-4cd5-96b9-343822cfd6f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\handler">
+      <UniqueIdentifier>{1c09dc23-26e4-492a-b992-f5216071c41d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\interface">
+      <UniqueIdentifier>{c7a2361f-8afd-44fc-88f0-a80f3ea702f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\model">
+      <UniqueIdentifier>{aea8884e-fbca-4338-ae79-a56b6bd6c3cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\model">
+      <UniqueIdentifier>{3401ac09-e306-4f4a-8b2b-d7320879b41a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ServerLauncher.cpp">
@@ -21,6 +36,15 @@
     <ClCompile Include="ClientState.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="handler\LoginHandler.cpp">
+      <Filter>소스 파일\handler</Filter>
+    </ClCompile>
+    <ClCompile Include="handler\ChatHandler.cpp">
+      <Filter>소스 파일\handler</Filter>
+    </ClCompile>
+    <ClCompile Include="model\User.cpp">
+      <Filter>소스 파일\model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClientState.h">
@@ -28,6 +52,18 @@
     </ClInclude>
     <ClInclude Include="CAF_Atom.h">
       <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="handler\LoginHandler.h">
+      <Filter>헤더 파일\handler</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IMessageHandler.h">
+      <Filter>헤더 파일\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="handler\ChatHandler.h">
+      <Filter>헤더 파일\handler</Filter>
+    </ClInclude>
+    <ClInclude Include="model\User.h">
+      <Filter>헤더 파일\model</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

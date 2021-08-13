@@ -16,45 +16,26 @@ CAF_POP_WARNINGS
 
 #include	"ClientState.h"
 #include	"CAF_Atom.h"
+#include	"handler/LoginHandler.h"
+#include	"handler/ChatHandler.h"
 
 
 ClientState::ClientState()
+	: user()
+	, loginHandler(user)
+	, chatHandler(user)
 {
 	// nop
 }
 
+ClientState::~ClientState()
+{
+	std::cout << "destroy ClientState" << std::endl;
+}
+
 caf::behavior ClientState::make_behavior()
 {
-	return {
-		[this](chat_request_atom, std::string stream)
-	{
-		auto message = ToActorMessageArg<wzbgame::message::chat::ChatRequest>(stream);
-		auto chatMessage = message.message();
+	auto handlerList = caf::message_handler{ loginHandler.GetMessageHandler() }.or_else(chatHandler.GetMessageHandler());
 
-		std::cout << "'response' " << chatMessage << std::endl;
-
-		wzbgame::message::chat::ChatResponse response;
-		response.set_message(chatMessage);
-		wzbgame::message::WrappedMessage responseWrapped = MakeWrappedMessage(wzbgame::message::MessageType::ChatResponse, response);
-
-		wzbgame::message::chat::ChatNotification notification;
-		//notification.set_name(name);
-		notification.set_message(chatMessage);
-		wzbgame::message::WrappedMessage notificationWrapped = MakeWrappedMessage(wzbgame::message::MessageType::ChatNotification, notification);
-
-		return caf::make_message(send_and_broadcast_atom_v, responseWrapped.SerializeAsString(), notificationWrapped.SerializeAsString());
-	},
-		[this](login_request_atom, std::string stream)
-	{
-		auto message = ToActorMessageArg<wzbgame::message::login::LoginRequest>(stream);
-
-		std::cout << "login account id : " << message.account_id() << std::endl;
-
-		wzbgame::message::login::LoginResponse response;
-		response.set_result(wzbgame::type::result::Succeed);
-		wzbgame::message::WrappedMessage wrapped = MakeWrappedMessage(wzbgame::message::MessageType::LoginResponse, response);
-
-		return caf::make_message(send_to_client_atom_v, wrapped.SerializeAsString());
-	},
-	};
+	return handlerList;
 }

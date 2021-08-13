@@ -79,9 +79,9 @@ caf::behavior HandleMessage(caf::stateful_actor<ClientInfo>* self)
 		{
 			return { chat_request_atom_v, str };
 },
-[=](chat_notification_atom, std::string str) -> caf::result<chat_notification_atom, std::string>
+[=](chat_notification_atom, std::string accountID, std::string chatMessage) -> caf::result<chat_notification_atom, std::string, std::string>
 {
-	return { chat_notification_atom_v, str };
+	return { chat_notification_atom_v, accountID, chatMessage };
 },
 [=](login_response_atom, int result) -> caf::result<login_response_atom, int>
 {
@@ -153,9 +153,9 @@ void TransferNetworkMessage(caf::io::broker* self, caf::io::connection_handle hd
     p.mutable_response()->set_message(str);
     write(p);
 },
-[=](chat_notification_atom, std::string str)
+[=](chat_notification_atom, std::string accountID, std::string chatMessage)
 {
-    caf::aout(self) << "'notification' " << str << std::endl;
+    caf::aout(self) << accountID << " : " << chatMessage << std::endl;
 },
 [=](login_request_atom, std::string accountID)
 {
@@ -199,7 +199,7 @@ void TransferNetworkMessage(caf::io::broker* self, caf::io::connection_handle hd
         {
             wzbgame::message::chat::ChatNotification pm;
             p.message().UnpackTo(&pm);
-            self->send(buddy, chat_notification_atom_v, pm.message());
+            self->send(buddy, chat_notification_atom_v, pm.name(), pm.message());
         }
         break;
 
