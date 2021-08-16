@@ -143,6 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CAF_Atom.cpp" />
     <ClCompile Include="ClientState.cpp" />
     <ClCompile Include="handler\ChatHandler.cpp" />
     <ClCompile Include="handler\LoginHandler.cpp" />

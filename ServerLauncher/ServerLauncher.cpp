@@ -125,26 +125,10 @@ void TransferNetworkMessage(caf::io::broker* self, caf::io::connection_handle hd
 		wzbgame::message::WrappedMessage p;
 		p.ParseFromArray(msg.buf.data(), static_cast<int>(msg.buf.size()));
 
-		switch (p.type())
-		{
-		case wzbgame::message::LoginRequest:
-		{
-			self->send(buddy, login_request_atom_v, p.message().SerializeAsString());
-		}
-		break;
-
-		case wzbgame::message::ChatRequest:
-		{
-			self->send(buddy, chat_request_atom_v, p.message().SerializeAsString());
-		}
-		break;
-
-		//case wzbgame::message::UnknownMessageType:
-		default:
+		if (!SendContentsMessage(self, buddy, p))
 		{
 			self->quit(caf::exit_reason::user_shutdown);
 			std::cerr << "neither Request nor Response!" << std::endl;
-		}
 		}
 
 		// Receive next length prefix
