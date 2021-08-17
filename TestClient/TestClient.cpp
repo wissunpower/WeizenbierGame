@@ -89,70 +89,92 @@ caf::behavior HandleMessage(caf::stateful_actor<ClientInfo>* self)
 	print_on_exit(self, "message handler");
 
     return {
-			[=](chat_response_atom, std::string str) -> caf::result<chat_request_atom, std::string>
-		{
-			return {};
-		},
-	[=](chat_request_atom, std::string str) -> caf::result<chat_request_atom, std::string>
-		{
-			return { chat_request_atom_v, str };
-},
-[=](chat_notification_atom, std::string accountID, std::string chatMessage) -> caf::result<chat_notification_atom, std::string, std::string>
-{
-	return { chat_notification_atom_v, accountID, chatMessage };
-},
-[=](login_response_atom, int result) -> caf::result<login_response_atom, int>
-{
-    return { login_response_atom_v, result };
-},
-[=](character_create_request_atom, std::string characterID)
-{
-    caf::aout(self) << "Try Character Create -> Character ID : " << characterID << std::endl;
+        [=](chat_request_atom, std::string str)
+    {
+        caf::aout(self) << "'request' " << str << std::endl;
+        wzbgame::message::chat::ChatRequest p;
+        p.set_message(str);
+        auto wrapped = MakeWrappedMessage(wzbgame::message::MessageType::ChatRequest, p);
 
-    wzbgame::message::lobby::CharacterCreateRequest p;
-    p.set_character_id(characterID);
-    auto wrapped = MakeWrappedMessage(wzbgame::message::MessageType::CharacterCreateRequest, p);
+        return caf::make_message(send_to_server_atom_v, wrapped.SerializeAsString());
+    },
+        [=](chat_response_atom, std::string str)
+    {
+        return caf::make_message();
+    },
+        [=](chat_notification_atom, std::string accountID, std::string chatMessage)
+    {
+        caf::aout(self) << accountID << " : " << chatMessage << std::endl;
+        
+        return caf::make_message();
+    },
+        [=](login_response_atom, int result)
+    {
+        return caf::make_message();
+    },
+        [=](login_request_atom, std::string accountID)
+    {
+        caf::aout(self) << "Try Login -> Account ID : " << accountID << std::endl;
+        
+        wzbgame::message::login::LoginRequest p;
+        p.set_account_id(accountID);
+        auto wrapped = MakeWrappedMessage(wzbgame::message::MessageType::LoginRequest, p);
 
-    return caf::make_message(send_to_server_atom_v, wrapped.SerializeAsString());
-},
-[=](character_create_response_atom, int result)
-{
-    caf::aout(self) << "Character Create Result : " << result << std::endl;
+        return caf::make_message(send_to_server_atom_v, wrapped.SerializeAsString());
+    },
+        [=](login_response_atom, int result)
+    {
+        caf::aout(self) << "Login Result : " << result << std::endl;
 
-    return caf::make_message();
-},
-[=](character_delete_request_atom, std::string characterID)
-{
-    caf::aout(self) << "Try Character Delete -> Character ID : " << characterID << std::endl;
-
-    wzbgame::message::lobby::CharacterDeleteRequest p;
-    p.set_character_id(characterID);
-    auto wrapped = MakeWrappedMessage(wzbgame::message::MessageType::CharacterDeleteRequest, p);
-
-    return caf::make_message(send_to_server_atom_v, wrapped.SerializeAsString());
-},
-[=](character_delete_response_atom, int result)
-{
-    caf::aout(self) << "Character Delete Result : " << result << std::endl;
-
-    return caf::make_message();
-},
-[=](character_select_request_atom, std::string characterID)
-{
-    caf::aout(self) << "Try Character Select -> Character ID : " << characterID << std::endl;
-
-    wzbgame::message::lobby::CharacterSelectRequest p;
-    p.set_character_id(characterID);
-    auto wrapped = MakeWrappedMessage(wzbgame::message::MessageType::CharacterSelectRequest, p);
-
-    return caf::make_message(send_to_server_atom_v, wrapped.SerializeAsString());
-},
-[=](character_select_response_atom, int result)
-{
-    caf::aout(self) << "Character Select Result : " << result << std::endl;
-
-    return caf::make_message();
-},
+        return caf::make_message();
+    },
+        [=](character_create_request_atom, std::string characterID)
+    {
+        caf::aout(self) << "Try Character Create -> Character ID : " << characterID << std::endl;
+        wzbgame::message::lobby::CharacterCreateRequest p;
+        p.set_character_id(characterID);
+        auto wrapped = MakeWrappedMessage(wzbgame::message::MessageType::CharacterCreateRequest, p);
+        
+        return caf::make_message(send_to_server_atom_v, wrapped.SerializeAsString());
+    },
+        [=](character_create_response_atom, int result)
+    {
+        caf::aout(self) << "Character Create Result : " << result << std::endl;
+        
+        return caf::make_message();
+    },
+        [=](character_delete_request_atom, std::string characterID)
+    {
+        caf::aout(self) << "Try Character Delete -> Character ID : " << characterID << std::endl;
+        
+        wzbgame::message::lobby::CharacterDeleteRequest p;
+        p.set_character_id(characterID);
+        auto wrapped = MakeWrappedMessage(wzbgame::message::MessageType::CharacterDeleteRequest, p);
+        
+        return caf::make_message(send_to_server_atom_v, wrapped.SerializeAsString());
+    },
+        [=](character_delete_response_atom, int result)
+    {
+        caf::aout(self) << "Character Delete Result : " << result << std::endl;
+        
+        return caf::make_message();
+    },
+        [=](character_select_request_atom, std::string characterID)
+    {
+        caf::aout(self) << "Try Character Select -> Character ID : " << characterID << std::endl;
+        
+        wzbgame::message::lobby::CharacterSelectRequest p;
+        p.set_character_id(characterID);
+        auto wrapped = MakeWrappedMessage(wzbgame::message::MessageType::CharacterSelectRequest, p);
+        
+        return caf::make_message(send_to_server_atom_v, wrapped.SerializeAsString());
+    },
+        [=](character_select_response_atom, int result)
+    {
+        caf::aout(self) << "Character Select Result : " << result << std::endl;
+        
+        return caf::make_message();
+    },
     };
 }
 
@@ -212,41 +234,11 @@ void TransferNetworkMessage(caf::io::broker* self, caf::io::connection_handle hd
         caf::aout(self) << "connection closed" << std::endl;
         self->send_exit(buddy, caf::exit_reason::remote_link_unreachable);
         self->quit(caf::exit_reason::remote_link_unreachable);
-},
-[=](send_to_server_atom, std::string messageStream)
-{
-    sendToServer(messageStream);
-},
-[=](chat_request_atom, std::string str)
-{
-    caf::aout(self) << "'request' " << str << std::endl;
-    wzbgame::message::chat::ChatRequest p;
-    p.set_message(str);
-    WriteProtobufMessage(self, hdl, wzbgame::message::MessageType::ChatRequest, p);
-},
-[=](chat_response_atom, std::string str)
-{
-    caf::aout(self) << "'response' " << str << std::endl;
-    wzbgame::message::chat::ChatProtocol p;
-    p.mutable_response()->set_message(str);
-    write(p);
-},
-[=](chat_notification_atom, std::string accountID, std::string chatMessage)
-{
-    caf::aout(self) << accountID << " : " << chatMessage << std::endl;
-},
-[=](login_request_atom, std::string accountID)
-{
-    caf::aout(self) << "Try Login -> Account ID : " << accountID << std::endl;
-
-    wzbgame::message::login::LoginRequest p;
-    p.set_account_id(accountID);
-    WriteProtobufMessage(self, hdl, wzbgame::message::MessageType::LoginRequest, p);
-},
-[=](login_response_atom, int result)
-{
-    caf::aout(self) << "Login Result : " << result << std::endl;
-},
+    },
+        [=](send_to_server_atom, std::string messageStream)
+    {
+        sendToServer(messageStream);
+    },
     };
 
     auto awaitProtobufData = caf::message_handler{
@@ -324,7 +316,7 @@ void TransferNetworkMessage(caf::io::broker* self, caf::io::connection_handle hd
         // Receive next length prefix
         self->configure_read(hdl, caf::io::receive_policy::exactly(sizeof(uint32_t)));
         self->unbecome();
-},
+    },
     }.or_else(defaultCallbacks);
 
     auto awaitLengthPrefix = caf::message_handler
@@ -406,7 +398,7 @@ void RunClient(caf::actor_system& system, const config& cfg)
         }
     }
 
-    caf::send_as(*messageTransferActor, *messageTransferActor, login_request_atom_v, accountName);
+    caf::send_as(*messageTransferActor, messageHandleActor, login_request_atom_v, accountName);
 
 
     std::cout << "*** starting client, type '/help' for a list of commands\n";
