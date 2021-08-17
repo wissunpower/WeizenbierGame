@@ -6,6 +6,7 @@
 #include	"model/User.h"
 #include	"handler/LoginHandler.h"
 #include	"handler/ChatHandler.h"
+#include	"handler/LobbyHandler.h"
 
 
 class ClientState
@@ -27,6 +28,7 @@ public:
 private:
 	LoginHandler loginHandler;
 	ChatHandler chatHandler;
+	LobbyHandler lobbyHandler;
 
 	User user;
 

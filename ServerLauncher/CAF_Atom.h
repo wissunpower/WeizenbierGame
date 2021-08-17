@@ -20,6 +20,10 @@ CAF_ADD_ATOM(server_launcher, chat_request_atom)
 
 CAF_ADD_ATOM(server_launcher, login_request_atom)
 
+CAF_ADD_ATOM(server_launcher, character_create_request_atom)
+CAF_ADD_ATOM(server_launcher, character_delete_request_atom)
+CAF_ADD_ATOM(server_launcher, character_select_request_atom)
+
 CAF_END_TYPE_ID_BLOCK(server_launcher)
 
 

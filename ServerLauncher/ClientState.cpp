@@ -16,14 +16,13 @@ CAF_POP_WARNINGS
 
 #include	"ClientState.h"
 #include	"CAF_Atom.h"
-#include	"handler/LoginHandler.h"
-#include	"handler/ChatHandler.h"
 
 
 ClientState::ClientState()
 	: user()
 	, loginHandler(user)
 	, chatHandler(user)
+	, lobbyHandler(user)
 {
 	// nop
 }
@@ -35,7 +34,10 @@ ClientState::~ClientState()
 
 caf::behavior ClientState::make_behavior()
 {
-	auto handlerList = caf::message_handler{ loginHandler.GetMessageHandler() }.or_else(chatHandler.GetMessageHandler());
+	auto handlerList =
+		caf::message_handler{ loginHandler.GetMessageHandler() }
+		.or_else(chatHandler.GetMessageHandler())
+		.or_else(lobbyHandler.GetMessageHandler());
 
 	return handlerList;
 }

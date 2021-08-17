@@ -19,6 +19,24 @@ bool SendContentsMessage(caf::io::broker* broker, const caf::actor& dest,
 	}
 	break;
 
+	case wzbgame::message::CharacterCreateRequest:
+	{
+		broker->send(dest, character_create_request_atom_v, message.message().SerializeAsString());
+	}
+	break;
+
+	case wzbgame::message::CharacterDeleteRequest:
+	{
+		broker->send(dest, character_delete_request_atom_v, message.message().SerializeAsString());
+	}
+	break;
+
+	case wzbgame::message::CharacterSelectRequest:
+	{
+		broker->send(dest, character_select_request_atom_v, message.message().SerializeAsString());
+	}
+	break;
+
 	//case wzbgame::message::UnknownMessageType:
 	default:
 		return false;
