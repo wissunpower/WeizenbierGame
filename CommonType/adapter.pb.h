@@ -75,12 +75,18 @@ enum MessageType : int {
   ChatNotification = 12,
   LoginRequest = 20,
   LoginResponse = 21,
+  CharacterCreateRequest = 30,
+  CharacterCreateResponse = 31,
+  CharacterDeleteRequest = 40,
+  CharacterDeleteResponse = 41,
+  CharacterSelectRequest = 50,
+  CharacterSelectResponse = 51,
   MessageType_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   MessageType_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool MessageType_IsValid(int value);
 constexpr MessageType MessageType_MIN = UnknownMessageType;
-constexpr MessageType MessageType_MAX = LoginResponse;
+constexpr MessageType MessageType_MAX = CharacterSelectResponse;
 constexpr int MessageType_ARRAYSIZE = MessageType_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* MessageType_descriptor();

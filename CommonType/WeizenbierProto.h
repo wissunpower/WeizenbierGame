@@ -5,3 +5,4 @@
 #include	"chat.pb.h"
 #include	"login.pb.h"
 #include	"adapter.pb.h"
+#include	"lobby.pb.h"

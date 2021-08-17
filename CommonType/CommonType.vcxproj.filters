@@ -39,6 +39,9 @@
     <ClInclude Include="WeizenbierProto.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="lobby.pb.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CommonType.cpp">
@@ -59,6 +62,9 @@
     <ClCompile Include="result.pb.cc">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="lobby.pb.cc">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\ProtoType\chat.proto">
@@ -71,6 +77,9 @@
       <Filter>ProtoType</Filter>
     </CustomBuild>
     <CustomBuild Include="..\ProtoType\result.proto">
+      <Filter>ProtoType</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ProtoType\lobby.proto">
       <Filter>ProtoType</Filter>
     </CustomBuild>
   </ItemGroup>

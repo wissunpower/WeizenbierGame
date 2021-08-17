@@ -18,6 +18,13 @@ enum MessageType
 
 	LoginRequest =				20;
 	LoginResponse =				21;
+	
+	CharacterCreateRequest =	30;
+	CharacterCreateResponse =	31;
+	CharacterDeleteRequest =	40;
+	CharacterDeleteResponse =	41;
+	CharacterSelectRequest =	50;
+	CharacterSelectResponse =	51;
 }
 
 

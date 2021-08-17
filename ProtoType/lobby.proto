@@ -1,0 +1,36 @@
+
+syntax = "proto3";
+
+
+package wzbgame.message.lobby;
+
+
+message CharacterCreateRequest
+{
+	optional bytes character_id = 1;
+}
+
+message CharacterCreateResponse
+{
+	optional int32 Result = 1;
+}
+
+message CharacterDeleteRequest
+{
+	optional bytes character_id = 1;
+}
+
+message CharacterDeleteResponse
+{
+	optional int32 Result = 1;
+}
+
+message CharacterSelectRequest
+{
+	optional bytes character_id = 1;
+}
+
+message CharacterSelectResponse
+{
+	optional int32 Result = 1;
+}
