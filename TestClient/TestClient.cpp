@@ -19,7 +19,7 @@ CAF_POP_WARNINGS
 
 CAF_BEGIN_TYPE_ID_BLOCK(test_client, first_custom_type_id)
 
-    CAF_ADD_ATOM(test_client, kickoff_atom)
+    CAF_ADD_ATOM(test_client, send_to_server_atom)
 
     CAF_ADD_ATOM(test_client, chat_request_atom)
     CAF_ADD_ATOM(test_client, chat_response_atom)
@@ -27,6 +27,13 @@ CAF_BEGIN_TYPE_ID_BLOCK(test_client, first_custom_type_id)
 
     CAF_ADD_ATOM(test_client, login_request_atom)
     CAF_ADD_ATOM(test_client, login_response_atom)
+
+    CAF_ADD_ATOM(test_client, character_create_request_atom)
+    CAF_ADD_ATOM(test_client, character_create_response_atom)
+    CAF_ADD_ATOM(test_client, character_delete_request_atom)
+    CAF_ADD_ATOM(test_client, character_delete_response_atom)
+    CAF_ADD_ATOM(test_client, character_select_request_atom)
+    CAF_ADD_ATOM(test_client, character_select_response_atom)
 
 CAF_END_TYPE_ID_BLOCK(test_client)
 
@@ -66,6 +73,17 @@ struct ClientInfo
 };
 
 
+template <typename MT>
+wzbgame::message::WrappedMessage MakeWrappedMessage(wzbgame::message::MessageType type, MT data)
+{
+    wzbgame::message::WrappedMessage wrapped;
+    wrapped.set_type(type);
+    wrapped.mutable_message()->PackFrom(data);
+
+    return wrapped;
+}
+
+
 caf::behavior HandleMessage(caf::stateful_actor<ClientInfo>* self)
 {
 	print_on_exit(self, "message handler");
@@ -87,7 +105,55 @@ caf::behavior HandleMessage(caf::stateful_actor<ClientInfo>* self)
 {
     return { login_response_atom_v, result };
 },
-	};
+[=](character_create_request_atom, std::string characterID)
+{
+    caf::aout(self) << "Try Character Create -> Character ID : " << characterID << std::endl;
+
+    wzbgame::message::lobby::CharacterCreateRequest p;
+    p.set_character_id(characterID);
+    auto wrapped = MakeWrappedMessage(wzbgame::message::MessageType::CharacterCreateRequest, p);
+
+    return caf::make_message(send_to_server_atom_v, wrapped.SerializeAsString());
+},
+[=](character_create_response_atom, int result)
+{
+    caf::aout(self) << "Character Create Result : " << result << std::endl;
+
+    return caf::make_message();
+},
+[=](character_delete_request_atom, std::string characterID)
+{
+    caf::aout(self) << "Try Character Delete -> Character ID : " << characterID << std::endl;
+
+    wzbgame::message::lobby::CharacterDeleteRequest p;
+    p.set_character_id(characterID);
+    auto wrapped = MakeWrappedMessage(wzbgame::message::MessageType::CharacterDeleteRequest, p);
+
+    return caf::make_message(send_to_server_atom_v, wrapped.SerializeAsString());
+},
+[=](character_delete_response_atom, int result)
+{
+    caf::aout(self) << "Character Delete Result : " << result << std::endl;
+
+    return caf::make_message();
+},
+[=](character_select_request_atom, std::string characterID)
+{
+    caf::aout(self) << "Try Character Select -> Character ID : " << characterID << std::endl;
+
+    wzbgame::message::lobby::CharacterSelectRequest p;
+    p.set_character_id(characterID);
+    auto wrapped = MakeWrappedMessage(wzbgame::message::MessageType::CharacterSelectRequest, p);
+
+    return caf::make_message(send_to_server_atom_v, wrapped.SerializeAsString());
+},
+[=](character_select_response_atom, int result)
+{
+    caf::aout(self) << "Character Select Result : " << result << std::endl;
+
+    return caf::make_message();
+},
+    };
 }
 
 
@@ -132,12 +198,24 @@ void TransferNetworkMessage(caf::io::broker* self, caf::io::connection_handle hd
         self->flush(hdl);
     };
 
+    auto sendToServer = [=](const std::string& messageStream)
+    {
+        auto bufSize = htonl(static_cast<uint32_t>(messageStream.size()));
+        self->write(hdl, sizeof(uint32_t), &bufSize);
+        self->write(hdl, messageStream.size(), messageStream.data());
+        self->flush(hdl);
+    };
+
     auto defaultCallbacks = caf::message_handler{
         [=](const caf::io::connection_closed_msg&)
     {
         caf::aout(self) << "connection closed" << std::endl;
         self->send_exit(buddy, caf::exit_reason::remote_link_unreachable);
         self->quit(caf::exit_reason::remote_link_unreachable);
+},
+[=](send_to_server_atom, std::string messageStream)
+{
+    sendToServer(messageStream);
 },
 [=](chat_request_atom, std::string str)
 {
@@ -208,6 +286,30 @@ void TransferNetworkMessage(caf::io::broker* self, caf::io::connection_handle hd
             wzbgame::message::login::LoginResponse pm;
             p.message().UnpackTo(&pm);
             self->send(buddy, login_response_atom_v, pm.result());
+        }
+        break;
+
+        case wzbgame::message::CharacterCreateResponse:
+        {
+            wzbgame::message::lobby::CharacterCreateResponse pm;
+            p.message().UnpackTo(&pm);
+            self->send(buddy, character_create_response_atom_v, pm.result());
+        }
+        break;
+
+        case wzbgame::message::CharacterDeleteResponse:
+        {
+            wzbgame::message::lobby::CharacterDeleteResponse pm;
+            p.message().UnpackTo(&pm);
+            self->send(buddy, character_delete_response_atom_v, pm.result());
+        }
+        break;
+
+        case wzbgame::message::CharacterSelectResponse:
+        {
+            wzbgame::message::lobby::CharacterSelectResponse pm;
+            p.message().UnpackTo(&pm);
+            self->send(buddy, character_select_response_atom_v, pm.result());
         }
         break;
 
@@ -326,11 +428,26 @@ void RunClient(caf::actor_system& system, const config& cfg)
 			{
 				std::cin.setstate(std::ios_base::eofbit);
 			}
-			else
+            else if (words.size() >= 2 && words[0] == "/charcreate")
+            {
+                caf::send_as(*messageTransferActor, messageHandleActor, character_create_request_atom_v, words[1]);
+            }
+            else if (words.size() >= 2 && words[0] == "/chardelete")
+            {
+                caf::send_as(*messageTransferActor, messageHandleActor, character_delete_request_atom_v, words[1]);
+            }
+            else if (words.size() >= 2 && words[0] == "/charselect")
+            {
+                caf::send_as(*messageTransferActor, messageHandleActor, character_select_request_atom_v, words[1]);
+            }
+            else
 			{
 				std::cout << "*** available commands : \n"
 					"\t/quit              quit the program\n"
-					"\t/help              print this text\n";
+                    "\t/charcreate        create character\n"
+                    "\t/chardelete        delete character\n"
+                    "\t/charselect        select character\n"
+                    "\t/help              print this text\n";
 			}
 		}
 		else
