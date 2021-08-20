@@ -29,6 +29,8 @@ LobbyHandler::LobbyHandler(User& srcUser)
 caf::message_handler LobbyHandler::GetMessageHandler() const
 {
 	return caf::message_handler{
+
+		// 캐릭터 생성 요청 처리
 		[this](character_create_request_atom, std::string stream)
 	{
 		auto resultValue = wzbgame::type::result::UnknownFailure;
@@ -55,20 +57,34 @@ caf::message_handler LobbyHandler::GetMessageHandler() const
 
 		return caf::make_message(send_to_client_atom_v, wrapped.SerializeAsString());
 	},
+
+		// 캐릭터 삭제 요청 처리
 		[this](character_delete_request_atom, std::string stream)
 	{
-		auto message = ToActorMessageArg<wzbgame::message::lobby::CharacterDeleteRequest>(stream);
+		auto resultValue = wzbgame::type::result::UnknownFailure;
 
+		try
+		{
+			auto message = ToActorMessageArg<wzbgame::message::lobby::CharacterDeleteRequest>(stream);
 
-		// TODO
-
+			user.DeletePlayCharacter(message.character_id());
+			
+			resultValue = wzbgame::type::result::Succeed;
+		}
+		catch (const WzbContentsException& e)
+		{
+			resultValue = static_cast<ResultType>(e.ResultCode);
+			std::cout << e.what() << std::endl;
+		}
 
 		wzbgame::message::lobby::CharacterDeleteResponse response;
-		response.set_result(wzbgame::type::result::Succeed);
+		response.set_result(resultValue);
 		wzbgame::message::WrappedMessage wrapped = MakeWrappedMessage(wzbgame::message::MessageType::CharacterDeleteResponse, response);
 
 		return caf::make_message(send_to_client_atom_v, wrapped.SerializeAsString());
 	},
+
+		// 캐릭터 선택 요청 처리
 		[this](character_select_request_atom, std::string stream)
 	{
 		auto message = ToActorMessageArg<wzbgame::message::lobby::CharacterSelectRequest>(stream);

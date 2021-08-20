@@ -15,6 +15,7 @@ class User
 public:
 
 	ResultType CreatePlayCharacter(const std::string& characterName);
+	ResultType DeletePlayCharacter(const std::string& characterName);
 
 
 public:
@@ -35,6 +36,6 @@ private:
 	std::string accountID;
 
 	// < PlayCharacter.name, PlayCharacter object >
-	std::map<std::string, PlayCharacter> playCharacterList;
+	std::map<std::string, PlayCharacter> _playCharacterList;
 
 };
