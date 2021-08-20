@@ -11,6 +11,7 @@ enum ResultType
 	Succeed						=			0;
 	UnknownFailure				=			1;
 
-	// 캐릭터 생성 관련
+	// 캐릭터 관리(생성, 삭제, 선택) 관련
 	AlreadyExistCharacter		=		10000;
+	NotFoundCharacter			=		10001;
 }
