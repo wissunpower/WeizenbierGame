@@ -6,3 +6,6 @@
 #include	"login.pb.h"
 #include	"adapter.pb.h"
 #include	"lobby.pb.h"
+
+
+using ResultType = wzbgame::type::result::ResultType;

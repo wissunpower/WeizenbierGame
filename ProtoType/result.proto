@@ -7,6 +7,10 @@ package wzbgame.type.result;
 
 enum ResultType
 {
-	Succeed					=			0;
-	UnknownFailure			=			1;
+	// 공통
+	Succeed						=			0;
+	UnknownFailure				=			1;
+
+	// 캐릭터 생성 관련
+	AlreadyExistCharacter		=		10000;
 }
