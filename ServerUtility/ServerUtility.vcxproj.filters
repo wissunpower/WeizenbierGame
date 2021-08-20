@@ -22,6 +22,18 @@
     <Filter Include="헤더 파일\helper">
       <UniqueIdentifier>{055cc2be-18a4-4151-b2b8-27ceb3b74314}</UniqueIdentifier>
     </Filter>
+    <Filter Include="헤더 파일\model">
+      <UniqueIdentifier>{85433893-1221-4884-8306-a462141dfbf6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\model">
+      <UniqueIdentifier>{504d983d-7a4b-4291-a236-a6170e5ea2a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\model\exception">
+      <UniqueIdentifier>{50bf4394-ea85-4b71-a941-8eb4c61402ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\model\exception">
+      <UniqueIdentifier>{a270cd05-f37c-4882-949d-b3f8aaad0883}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -45,6 +57,15 @@
     <ClInclude Include="config\ActorSystemConfig.h">
       <Filter>헤더 파일\config</Filter>
     </ClInclude>
+    <ClInclude Include="model\exception\WzbException.h">
+      <Filter>헤더 파일\model\exception</Filter>
+    </ClInclude>
+    <ClInclude Include="model\exception\WzbSystemException.h">
+      <Filter>헤더 파일\model\exception</Filter>
+    </ClInclude>
+    <ClInclude Include="model\exception\WzbContentsException.h">
+      <Filter>헤더 파일\model\exception</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -52,6 +73,15 @@
     </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="model\exception\WzbException.cpp">
+      <Filter>소스 파일\model\exception</Filter>
+    </ClCompile>
+    <ClCompile Include="model\exception\WzbSystemException.cpp">
+      <Filter>소스 파일\model\exception</Filter>
+    </ClCompile>
+    <ClCompile Include="model\exception\WzbContentsException.cpp">
+      <Filter>소스 파일\model\exception</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
