@@ -31,14 +31,26 @@ caf::message_handler LobbyHandler::GetMessageHandler() const
 	return caf::message_handler{
 		[this](character_create_request_atom, std::string stream)
 	{
-		auto message = ToActorMessageArg<wzbgame::message::lobby::CharacterCreateRequest>(stream);
+		auto resultValue = wzbgame::type::result::UnknownFailure;
 
+		try
+		{
+			auto message = ToActorMessageArg<wzbgame::message::lobby::CharacterCreateRequest>(stream);
 
-		// TODO
+			// TODO : 캐릭터 아이디 중복 확인
+			
+			user.CreatePlayCharacter(message.character_id());
 
+			resultValue = wzbgame::type::result::Succeed;
+		}
+		catch (const WzbContentsException& e)
+		{
+			resultValue = static_cast<ResultType>(e.ResultCode);
+			std::cout << e.what() << std::endl;
+		}
 
 		wzbgame::message::lobby::CharacterCreateResponse response;
-		response.set_result(wzbgame::type::result::Succeed);
+		response.set_result(resultValue);
 		wzbgame::message::WrappedMessage wrapped = MakeWrappedMessage(wzbgame::message::MessageType::CharacterCreateResponse, response);
 
 		return caf::make_message(send_to_client_atom_v, wrapped.SerializeAsString());
