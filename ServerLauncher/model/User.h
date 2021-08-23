@@ -13,10 +13,13 @@ class User
 {
 
 public:
+	User();
 
 	ResultType CreatePlayCharacter(const std::string& characterName);
 	ResultType DeletePlayCharacter(const std::string& characterName);
 
+	PlayCharacter& SelectPlayCharacter(const std::string& characterName);
+	PlayCharacter& GetCurrentPlayCharacter() const;
 
 public:
 
@@ -37,5 +40,7 @@ private:
 
 	// < PlayCharacter.name, PlayCharacter object >
 	std::map<std::string, PlayCharacter> _playCharacterList;
+
+	std::map<std::string, PlayCharacter>::iterator _selectedCharacterIter;
 
 };

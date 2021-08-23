@@ -87,14 +87,24 @@ caf::message_handler LobbyHandler::GetMessageHandler() const
 		// 캐릭터 선택 요청 처리
 		[this](character_select_request_atom, std::string stream)
 	{
-		auto message = ToActorMessageArg<wzbgame::message::lobby::CharacterSelectRequest>(stream);
+		auto resultValue = wzbgame::type::result::UnknownFailure;
 
+		try
+		{
+			auto message = ToActorMessageArg<wzbgame::message::lobby::CharacterSelectRequest>(stream);
 
-		// TODO
+			user.SelectPlayCharacter(message.character_id());
 
+			resultValue = wzbgame::type::result::Succeed;
+		}
+		catch (const WzbContentsException & e)
+		{
+			resultValue = static_cast<ResultType>(e.ResultCode);
+			std::cout << e.what() << std::endl;
+		}
 
 		wzbgame::message::lobby::CharacterSelectResponse response;
-		response.set_result(wzbgame::type::result::Succeed);
+		response.set_result(resultValue);
 		wzbgame::message::WrappedMessage wrapped = MakeWrappedMessage(wzbgame::message::MessageType::CharacterSelectResponse, response);
 
 		return caf::make_message(send_to_client_atom_v, wrapped.SerializeAsString());
