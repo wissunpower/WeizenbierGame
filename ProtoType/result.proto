@@ -14,4 +14,5 @@ enum ResultType
 	// 캐릭터 관리(생성, 삭제, 선택) 관련
 	AlreadyExistCharacter		=		10000;
 	NotFoundCharacter			=		10001;
+	InvalidCurrentCharacter		=		10002;
 }

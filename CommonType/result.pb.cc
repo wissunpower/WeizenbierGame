@@ -29,14 +29,15 @@ static constexpr ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema* schemas = n
 static constexpr ::PROTOBUF_NAMESPACE_ID::Message* const* file_default_instances = nullptr;
 
 const char descriptor_table_protodef_result_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\014result.proto\022\023wzbgame.type.result*a\n\nR"
+  "\n\014result.proto\022\023wzbgame.type.result*\177\n\nR"
   "esultType\022\013\n\007Succeed\020\000\022\022\n\016UnknownFailure"
   "\020\001\022\032\n\025AlreadyExistCharacter\020\220N\022\026\n\021NotFou"
-  "ndCharacter\020\221Nb\006proto3"
+  "ndCharacter\020\221N\022\034\n\027InvalidCurrentCharacte"
+  "r\020\222Nb\006proto3"
   ;
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_result_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_result_2eproto = {
-  false, false, 142, descriptor_table_protodef_result_2eproto, "result.proto", 
+  false, false, 172, descriptor_table_protodef_result_2eproto, "result.proto", 
   &descriptor_table_result_2eproto_once, nullptr, 0, 0,
   schemas, file_default_instances, TableStruct_result_2eproto::offsets,
   nullptr, file_level_enum_descriptors_result_2eproto, file_level_service_descriptors_result_2eproto,
@@ -60,6 +61,7 @@ bool ResultType_IsValid(int value) {
     case 1:
     case 10000:
     case 10001:
+    case 10002:
       return true;
     default:
       return false;

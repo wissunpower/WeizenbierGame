@@ -63,12 +63,13 @@ enum ResultType : int {
   UnknownFailure = 1,
   AlreadyExistCharacter = 10000,
   NotFoundCharacter = 10001,
+  InvalidCurrentCharacter = 10002,
   ResultType_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   ResultType_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool ResultType_IsValid(int value);
 constexpr ResultType ResultType_MIN = Succeed;
-constexpr ResultType ResultType_MAX = NotFoundCharacter;
+constexpr ResultType ResultType_MAX = InvalidCurrentCharacter;
 constexpr int ResultType_ARRAYSIZE = ResultType_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* ResultType_descriptor();
