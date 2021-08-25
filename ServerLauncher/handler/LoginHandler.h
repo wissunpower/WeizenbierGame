@@ -11,12 +11,15 @@ class LoginHandler : public IMessageHandler
 {
 
 public:
-	LoginHandler(User& srcUser);
+	LoginHandler(caf::event_based_actor* self, User& srcUser);
 	virtual ~LoginHandler() = default;
 
 	caf::message_handler GetMessageHandler() const override;
 
 private:
+
+	caf::event_based_actor* self;
+
 	User& user;
 
 };

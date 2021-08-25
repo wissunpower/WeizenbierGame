@@ -20,8 +20,8 @@ CAF_POP_WARNINGS
 #include	"../model/User.h"
 
 
-LobbyHandler::LobbyHandler(User& srcUser)
-	: user(srcUser)
+LobbyHandler::LobbyHandler(caf::event_based_actor* self, User& srcUser)
+	: self(self), user(srcUser)
 {
 	;
 }
@@ -48,7 +48,7 @@ caf::message_handler LobbyHandler::GetMessageHandler() const
 		catch (const WzbContentsException& e)
 		{
 			resultValue = static_cast<ResultType>(e.ResultCode);
-			std::cout << e.what() << std::endl;
+			caf::aout(self) << e.what() << std::endl;
 		}
 
 		wzbgame::message::lobby::CharacterCreateResponse response;
@@ -74,7 +74,7 @@ caf::message_handler LobbyHandler::GetMessageHandler() const
 		catch (const WzbContentsException& e)
 		{
 			resultValue = static_cast<ResultType>(e.ResultCode);
-			std::cout << e.what() << std::endl;
+			caf::aout(self) << e.what() << std::endl;
 		}
 
 		wzbgame::message::lobby::CharacterDeleteResponse response;
@@ -100,7 +100,7 @@ caf::message_handler LobbyHandler::GetMessageHandler() const
 		catch (const WzbContentsException & e)
 		{
 			resultValue = static_cast<ResultType>(e.ResultCode);
-			std::cout << e.what() << std::endl;
+			caf::aout(self) << e.what() << std::endl;
 		}
 
 		wzbgame::message::lobby::CharacterSelectResponse response;

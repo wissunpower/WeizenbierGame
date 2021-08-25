@@ -14,7 +14,7 @@ class ClientState
 
 public:
 
-	explicit ClientState();
+	explicit ClientState(caf::event_based_actor* self);
 	~ClientState();
 
 	caf::behavior make_behavior();
@@ -26,6 +26,8 @@ public:
 
 
 private:
+	caf::event_based_actor* self;
+
 	LoginHandler loginHandler;
 	ChatHandler chatHandler;
 	LobbyHandler lobbyHandler;

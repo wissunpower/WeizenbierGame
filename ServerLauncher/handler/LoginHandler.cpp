@@ -20,8 +20,8 @@ CAF_POP_WARNINGS
 #include	"../model/User.h"
 
 
-LoginHandler::LoginHandler(User& srcUser)
-	: user(srcUser)
+LoginHandler::LoginHandler(caf::event_based_actor* self, User& srcUser)
+	: self(self), user(srcUser)
 {
 	;
 }
@@ -33,7 +33,7 @@ caf::message_handler LoginHandler::GetMessageHandler() const
 	{
 		auto message = ToActorMessageArg<wzbgame::message::login::LoginRequest>(stream);
 
-		std::cout << "login account id : " << message.account_id() << std::endl;
+		caf::aout(self) << "login account id : " << message.account_id() << std::endl;
 
 		user.SetAccountID(message.account_id());
 

@@ -11,12 +11,15 @@ class LobbyHandler : public IMessageHandler
 {
 
 public:
-	LobbyHandler(User& srcUser);
+	LobbyHandler(caf::event_based_actor* self, User& srcUser);
 	virtual ~LobbyHandler() = default;
 
 	caf::message_handler GetMessageHandler() const override;
 
 private:
+
+	caf::event_based_actor* self;
+
 	User& user;
 
 };

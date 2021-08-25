@@ -18,18 +18,19 @@ CAF_POP_WARNINGS
 #include	"CAF_Atom.h"
 
 
-ClientState::ClientState()
-	: user()
-	, loginHandler(user)
-	, chatHandler(user)
-	, lobbyHandler(user)
+ClientState::ClientState(caf::event_based_actor* self)
+	: self(self)
+	, user()
+	, loginHandler(self, user)
+	, chatHandler(self, user)
+	, lobbyHandler(self, user)
 {
 	// nop
 }
 
 ClientState::~ClientState()
 {
-	std::cout << "destroy ClientState" << std::endl;
+	caf::aout(self) << "destroy ClientState" << std::endl;
 }
 
 caf::behavior ClientState::make_behavior()

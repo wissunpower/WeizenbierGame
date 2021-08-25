@@ -19,8 +19,8 @@ CAF_POP_WARNINGS
 #include	"../model/User.h"
 
 
-ChatHandler::ChatHandler(User& srcUser)
-	: user(srcUser)
+ChatHandler::ChatHandler(caf::event_based_actor* self, User& srcUser)
+	: self(self), user(srcUser)
 {
 	;
 }
@@ -33,7 +33,7 @@ caf::message_handler ChatHandler::GetMessageHandler() const
 		auto message = ToActorMessageArg<wzbgame::message::chat::ChatRequest>(stream);
 		auto chatMessage = message.message();
 
-		std::cout << "'response' " << chatMessage << std::endl;
+		caf::aout(self) << "'response' " << chatMessage << std::endl;
 
 		wzbgame::message::chat::ChatResponse response;
 		response.set_message(chatMessage);
