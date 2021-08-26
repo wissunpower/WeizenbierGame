@@ -118,12 +118,12 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>..\caf\libcaf_core;..\caf\libcaf_io;..\protobuf\src;..\CommonType;..\ServerUtility;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\caf\libcaf_core;..\caf\libcaf_io;..\protobuf\src;..\CommonType;..\ServerUtility;..\ServerZone;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>..\caf\libcaf_core\$(Configuration)\caf_core.lib;..\caf\libcaf_io\$(Configuration)\caf_io.lib;ws2_32.lib;..\$(IntDir)CommonType.lib;..\$(IntDir)ServerUtility.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\caf\libcaf_core\$(Configuration)\caf_core.lib;..\caf\libcaf_io\$(Configuration)\caf_io.lib;ws2_32.lib;..\$(IntDir)CommonType.lib;..\$(IntDir)ServerUtility.lib;..\$(IntDir)ServerZone.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

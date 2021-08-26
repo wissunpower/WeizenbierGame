@@ -22,6 +22,8 @@ CAF_POP_WARNINGS
 
 #include "CAF_Atom.h"
 
+#include "manager/ZoneSupervisor.h"
+
 
 class GlobalContext
 {
@@ -198,6 +200,13 @@ caf::behavior server(caf::io::broker* self)
 }
 
 
+void InitializeZoneSystem(caf::actor_system& system, const ActorSystemConfig& cfg)
+{
+	auto zoneSupervisorActor = system.spawn<ZoneSupervisorActor>();
+	ZoneSupervisorInstance->SetActor(zoneSupervisorActor);
+}
+
+
 void RunServer(caf::actor_system& system, const ActorSystemConfig& cfg)
 {
 	std::cout << "run server" << std::endl;
@@ -221,6 +230,8 @@ void RunServer(caf::actor_system& system, const ActorSystemConfig& cfg)
 
 void caf_main(caf::actor_system& system, const ActorSystemConfig& cfg)
 {
+	InitializeZoneSystem(system, cfg);
+
 	RunServer(system, cfg);
 }
 

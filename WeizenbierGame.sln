@@ -5,6 +5,7 @@ VisualStudioVersion = 16.0.31424.327
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ServerLauncher", "ServerLauncher\ServerLauncher.vcxproj", "{E26000AC-FE6C-45C3-B979-131092373CB2}"
 	ProjectSection(ProjectDependencies) = postProject
+		{0228C894-3DE5-47A0-B848-C08244BDD520} = {0228C894-3DE5-47A0-B848-C08244BDD520}
 		{9AFEC5CA-1910-4A98-882B-76CF5C0C28CB} = {9AFEC5CA-1910-4A98-882B-76CF5C0C28CB}
 		{6A767BE4-A2B8-4528-8ECE-C32DFB75E6C1} = {6A767BE4-A2B8-4528-8ECE-C32DFB75E6C1}
 	EndProjectSection
@@ -20,6 +21,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ServerUtility", "ServerUtil
 	ProjectSection(ProjectDependencies) = postProject
 		{9AFEC5CA-1910-4A98-882B-76CF5C0C28CB} = {9AFEC5CA-1910-4A98-882B-76CF5C0C28CB}
 	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ServerZone", "ServerZone\ServerZone.vcxproj", "{0228C894-3DE5-47A0-B848-C08244BDD520}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +64,14 @@ Global
 		{6A767BE4-A2B8-4528-8ECE-C32DFB75E6C1}.Release|x64.Build.0 = Release|x64
 		{6A767BE4-A2B8-4528-8ECE-C32DFB75E6C1}.Release|x86.ActiveCfg = Release|Win32
 		{6A767BE4-A2B8-4528-8ECE-C32DFB75E6C1}.Release|x86.Build.0 = Release|Win32
+		{0228C894-3DE5-47A0-B848-C08244BDD520}.Debug|x64.ActiveCfg = Debug|x64
+		{0228C894-3DE5-47A0-B848-C08244BDD520}.Debug|x64.Build.0 = Debug|x64
+		{0228C894-3DE5-47A0-B848-C08244BDD520}.Debug|x86.ActiveCfg = Debug|Win32
+		{0228C894-3DE5-47A0-B848-C08244BDD520}.Debug|x86.Build.0 = Debug|Win32
+		{0228C894-3DE5-47A0-B848-C08244BDD520}.Release|x64.ActiveCfg = Release|x64
+		{0228C894-3DE5-47A0-B848-C08244BDD520}.Release|x64.Build.0 = Release|x64
+		{0228C894-3DE5-47A0-B848-C08244BDD520}.Release|x86.ActiveCfg = Release|Win32
+		{0228C894-3DE5-47A0-B848-C08244BDD520}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
