@@ -35,6 +35,9 @@ CAF_BEGIN_TYPE_ID_BLOCK(test_client, first_custom_type_id)
     CAF_ADD_ATOM(test_client, character_select_request_atom)
     CAF_ADD_ATOM(test_client, character_select_response_atom)
 
+    CAF_ADD_ATOM(test_client, ingame_enter_request_atom)
+    CAF_ADD_ATOM(test_client, ingame_enter_response_atom)
+
 CAF_END_TYPE_ID_BLOCK(test_client)
 
 
@@ -175,6 +178,22 @@ caf::behavior HandleMessage(caf::stateful_actor<ClientInfo>* self)
         
         return caf::make_message();
     },
+        [=](ingame_enter_request_atom, std::string characterID)
+    {
+        caf::aout(self) << "Try InGame Enter -> Character ID : " << characterID << std::endl;
+
+        wzbgame::message::lobby::InGameEnterRequest p;
+        p.set_character_id(characterID);
+        auto wrapped = MakeWrappedMessage(wzbgame::message::MessageType::InGameEnterRequest, p);
+
+        return caf::make_message(send_to_server_atom_v, wrapped.SerializeAsString());
+    },
+        [=](ingame_enter_response_atom, int result)
+    {
+        caf::aout(self) << "InGame Enter Result : " << result << std::endl;
+
+        return caf::make_message();
+    },
     };
 }
 
@@ -305,6 +324,14 @@ void TransferNetworkMessage(caf::io::broker* self, caf::io::connection_handle hd
         }
         break;
 
+        case wzbgame::message::InGameEnterResponse:
+        {
+            wzbgame::message::lobby::InGameEnterResponse pm;
+            p.message().UnpackTo(&pm);
+            self->send(buddy, ingame_enter_response_atom_v, pm.result());
+        }
+        break;
+
         //case wzbgame::message::UnknownMessageType:
         default:
 		{
@@ -432,6 +459,10 @@ void RunClient(caf::actor_system& system, const config& cfg)
             {
                 caf::send_as(*messageTransferActor, messageHandleActor, character_select_request_atom_v, words[1]);
             }
+            else if (words.size() >= 2 && words[0] == "/ingameenter")
+            {
+                caf::send_as(*messageTransferActor, messageHandleActor, ingame_enter_request_atom_v, words[1]);
+            }
             else
 			{
 				std::cout << "*** available commands : \n"
@@ -439,6 +470,7 @@ void RunClient(caf::actor_system& system, const config& cfg)
                     "\t/charcreate        create character\n"
                     "\t/chardelete        delete character\n"
                     "\t/charselect        select character\n"
+                    "\t/ingameenter       enter ingame\n"
                     "\t/help              print this text\n";
 			}
 		}
