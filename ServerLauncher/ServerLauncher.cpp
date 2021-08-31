@@ -18,43 +18,12 @@ CAF_POP_WARNINGS
 
 #include "ServerUtility.h"
 
+#include "SingletonInstance.h"
 #include "ClientState.h"
-
 #include "CAF_Atom.h"
 
+#include "atomdef/ZoneMove.h"
 #include "manager/ZoneSupervisor.h"
-
-
-class GlobalContext
-{
-public:
-	int RegisterActor(caf::io::connection_handle hdl, const caf::actor& actor)
-	{
-		m_actorMap.emplace(std::make_pair(hdl, actor));
-		return 0;
-	}
-
-	std::map<caf::io::connection_handle, caf::actor>& GetActorMap()
-	{
-		return m_actorMap;
-	}
-
-	void SetServerActor(const caf::actor& actor)
-	{
-		serverActor = std::move(actor);
-	}
-
-	const caf::actor& GetServerActor()
-	{
-		return serverActor;
-	}
-
-private:
-	std::map<caf::io::connection_handle, caf::actor> m_actorMap;
-	caf::actor serverActor;
-};
-
-auto GlobalContextInstance = Singleton<GlobalContext>::Get();
 
 
 // Utility function to print an exit message with custom name
@@ -175,7 +144,7 @@ caf::behavior server(caf::io::broker* self)
 	{
 		caf::aout(self) << "server accepted new connection" << std::endl;
 
-		auto clientActor = self->system().spawn<ClientActor>();
+		auto clientActor = self->system().spawn<ClientActor>(msg.handle);
 
 		auto brokerActor = self->fork(TransferNetworkMessage, msg.handle, clientActor);
 
@@ -188,15 +157,28 @@ caf::behavior server(caf::io::broker* self)
 
 	auto broadcastHandler = [=](broadcast_atom, std::string stream)
 	{
-		auto actorMap = GlobalContextInstance->GetActorMap();
+		auto brokerActorMap = GlobalContextInstance->GetActorMap();
 
-		for (const auto& clientActorInfo : GlobalContextInstance->GetActorMap())
+		for (const auto& brokerActorInfo : brokerActorMap)
 		{
-			self->send(clientActorInfo.second, broadcast_notification_atom_v, stream);
+			self->send(brokerActorInfo.second, broadcast_notification_atom_v, stream);
 		}
 	};
 
-	return { newConnectionHandler, broadcastHandler, };
+	auto sendClientPacketHandler = [=](send_to_client_atom, caf::io::connection_handle hdl, std::string stream)
+	{
+		auto brokerActorMap = GlobalContextInstance->GetActorMap();
+		auto brokerIter = brokerActorMap.find(hdl);
+
+		if (brokerIter == brokerActorMap.end())
+		{
+			return;
+		}
+
+		self->send(brokerIter->second, send_to_client_atom_v, stream);
+	};
+
+	return { newConnectionHandler, broadcastHandler, sendClientPacketHandler, };
 }
 
 
@@ -235,7 +217,7 @@ void caf_main(caf::actor_system& system, const ActorSystemConfig& cfg)
 	RunServer(system, cfg);
 }
 
-CAF_MAIN(caf::id_block::server_launcher, caf::io::middleman)
+CAF_MAIN(caf::id_block::server_launcher, caf::id_block::zone_move, caf::io::middleman)
 
 // 프로그램 실행: <Ctrl+F5> 또는 [디버그] > [디버깅하지 않고 시작] 메뉴
 // 프로그램 디버그: <F5> 키 또는 [디버그] > [디버깅 시작] 메뉴

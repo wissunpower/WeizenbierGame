@@ -25,6 +25,9 @@
     <Filter Include="헤더 파일\actorstate">
       <UniqueIdentifier>{352bd9dc-ae7a-4981-8fdf-1466251d53b1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="헤더 파일\atomdef">
+      <UniqueIdentifier>{ff52d294-b862-428e-a22f-d61ec0897009}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -38,6 +41,9 @@
     </ClInclude>
     <ClInclude Include="actorstate\ZoneState.h">
       <Filter>헤더 파일\actorstate</Filter>
+    </ClInclude>
+    <ClInclude Include="atomdef\ZoneMove.h">
+      <Filter>헤더 파일\atomdef</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

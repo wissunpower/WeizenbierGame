@@ -54,6 +54,9 @@
     <ClCompile Include="model\PlayCharacter.cpp">
       <Filter>소스 파일\model</Filter>
     </ClCompile>
+    <ClCompile Include="SingletonInstance.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClientState.h">
@@ -79,6 +82,9 @@
     </ClInclude>
     <ClInclude Include="model\PlayCharacter.h">
       <Filter>헤더 파일\model</Filter>
+    </ClInclude>
+    <ClInclude Include="SingletonInstance.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -14,8 +14,12 @@ CAF_POP_WARNINGS
 
 #include	"ServerUtility.h"
 
+#include	"atomdef/ZoneMove.h"
+#include	"manager/ZoneSupervisor.h"
+
 #include	"LobbyHandler.h"
 #include	"../CAF_Atom.h"
+#include	"../SingletonInstance.h"
 #include	"../ClientState.h"
 #include	"../model/User.h"
 
@@ -108,6 +112,35 @@ caf::message_handler LobbyHandler::GetMessageHandler() const
 		wzbgame::message::WrappedMessage wrapped = MakeWrappedMessage(wzbgame::message::MessageType::CharacterSelectResponse, response);
 
 		return caf::make_message(send_to_client_atom_v, wrapped.SerializeAsString());
+	},
+
+		// 인게임 입장 요청 처리
+		[this](ingame_enter_request_atom, std::string stream)
+	{
+		auto resultValue = wzbgame::type::result::UnknownFailure;
+
+		try
+		{
+			auto message = ToActorMessageArg<wzbgame::message::lobby::InGameEnterRequest>(stream);
+
+			self->request(ZoneSupervisorInstance->GetActor(), caf::infinite, zone_move::enter_ingame_request_atom_v).then(
+				[this](zone_move::enter_ingame_response_atom)
+			{
+				caf::aout(self) << "LobbyHandler received enter_ingame_response_atom." << std::endl;
+
+				wzbgame::message::lobby::InGameEnterResponse response;
+				response.set_result(ResultType::Succeed);
+				auto wrapped = MakeWrappedMessage(wzbgame::message::MessageType::InGameEnterResponse, response);
+
+				self->send(self, send_to_client_atom_v, wrapped.SerializeAsString());
+			}
+				);
+		}
+		catch (const WzbContentsException& e)
+		{
+			resultValue = static_cast<ResultType>(e.ResultCode);
+			caf::aout(self) << e.what() << std::endl;
+		}
 	},
 	};
 }

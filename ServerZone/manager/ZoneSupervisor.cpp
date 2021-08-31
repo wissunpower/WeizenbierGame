@@ -3,6 +3,9 @@
 
 #include	"ZoneSupervisor.h"
 
+#include	"patterns/Singleton.h"
+
+#include	"../atomdef/ZoneMove.h"
 #include	"../actorstate/ZoneState.h"
 
 
@@ -37,6 +40,11 @@ caf::behavior ZoneSupervisorState::make_behavior()
 	{
 		self->delegate(zoneSet[index], x, y);
 		index = (index + 1) % zoneSet.size();
+	},
+		[this](zone_move::enter_ingame_request_atom)
+	{
+		caf::aout(self) << "Zone Supervisor received enter_ingame_atom." << std::endl;
+		self->delegate(zoneSet[index], zone_move::enter_ingame_request_atom_v);
 	},
 	};
 }

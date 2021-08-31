@@ -14,19 +14,22 @@ class ClientState
 
 public:
 
-	explicit ClientState(caf::event_based_actor* self);
+	explicit ClientState(caf::event_based_actor* self, caf::io::connection_handle hdl);
 	~ClientState();
 
 	caf::behavior make_behavior();
 
 	static inline const char* name = "ClientState";
 
+
 public:
+
 	User& GetUser() { return user; }
 
 
 private:
 	caf::event_based_actor* self;
+	caf::io::connection_handle hdl;
 
 	LoginHandler loginHandler;
 	ChatHandler chatHandler;

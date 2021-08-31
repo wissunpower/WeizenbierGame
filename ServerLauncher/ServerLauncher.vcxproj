@@ -151,6 +151,7 @@
     <ClCompile Include="model\PlayCharacter.cpp" />
     <ClCompile Include="model\User.cpp" />
     <ClCompile Include="ServerLauncher.cpp" />
+    <ClCompile Include="SingletonInstance.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CAF_Atom.h" />
@@ -161,6 +162,7 @@
     <ClInclude Include="interface\IMessageHandler.h" />
     <ClInclude Include="model\PlayCharacter.h" />
     <ClInclude Include="model\User.h" />
+    <ClInclude Include="SingletonInstance.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

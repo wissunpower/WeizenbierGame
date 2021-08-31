@@ -16,10 +16,11 @@ CAF_POP_WARNINGS
 
 #include	"ClientState.h"
 #include	"CAF_Atom.h"
+#include	"SingletonInstance.h"
 
 
-ClientState::ClientState(caf::event_based_actor* self)
-	: self(self)
+ClientState::ClientState(caf::event_based_actor* self, caf::io::connection_handle hdl)
+	: self(self), hdl(hdl)
 	, user()
 	, loginHandler(self, user)
 	, chatHandler(self, user)
@@ -38,7 +39,13 @@ caf::behavior ClientState::make_behavior()
 	auto handlerList =
 		caf::message_handler{ loginHandler.GetMessageHandler() }
 		.or_else(chatHandler.GetMessageHandler())
-		.or_else(lobbyHandler.GetMessageHandler());
+		.or_else(lobbyHandler.GetMessageHandler())
+		.or_else(caf::message_handler{
+		[this](send_to_client_atom, std::string stream)
+	{
+		self->send(GlobalContextInstance->GetServerActor(), send_to_client_atom_v, hdl, stream);
+	},
+			});
 
 	return handlerList;
 }

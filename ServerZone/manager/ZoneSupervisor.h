@@ -5,8 +5,6 @@
 
 #include	"caf/event_based_actor.hpp"
 
-#include	"patterns/Singleton.h"
-
 
 class DECLSPEC ZoneSupervisorState
 {
@@ -34,7 +32,7 @@ using ZoneSupervisorActor = caf::stateful_actor<ZoneSupervisorState>;
 
 
 
-class ZoneSupervisor
+class DECLSPEC ZoneSupervisor
 {
 public:
 
@@ -51,5 +49,3 @@ public:
 private:
 	caf::actor _actor;
 };
-
-auto ZoneSupervisorInstance = Singleton<ZoneSupervisor>::Get();

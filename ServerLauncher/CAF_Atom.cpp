@@ -37,6 +37,12 @@ bool SendContentsMessage(caf::io::broker* broker, const caf::actor& dest,
 	}
 	break;
 
+	case wzbgame::message::InGameEnterRequest:
+	{
+		broker->send(dest, ingame_enter_request_atom_v, message.message().SerializeAsString());
+	}
+	break;
+
 	//case wzbgame::message::UnknownMessageType:
 	default:
 		return false;
