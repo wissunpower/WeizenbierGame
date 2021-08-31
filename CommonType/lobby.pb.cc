@@ -91,10 +91,34 @@ struct CharacterSelectResponseDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT CharacterSelectResponseDefaultTypeInternal _CharacterSelectResponse_default_instance_;
+constexpr InGameEnterRequest::InGameEnterRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : character_id_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string){}
+struct InGameEnterRequestDefaultTypeInternal {
+  constexpr InGameEnterRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~InGameEnterRequestDefaultTypeInternal() {}
+  union {
+    InGameEnterRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT InGameEnterRequestDefaultTypeInternal _InGameEnterRequest_default_instance_;
+constexpr InGameEnterResponse::InGameEnterResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : result_(0){}
+struct InGameEnterResponseDefaultTypeInternal {
+  constexpr InGameEnterResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~InGameEnterResponseDefaultTypeInternal() {}
+  union {
+    InGameEnterResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT InGameEnterResponseDefaultTypeInternal _InGameEnterResponse_default_instance_;
 }  // namespace lobby
 }  // namespace message
 }  // namespace wzbgame
-static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_lobby_2eproto[6];
+static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_lobby_2eproto[8];
 static constexpr ::PROTOBUF_NAMESPACE_ID::EnumDescriptor const** file_level_enum_descriptors_lobby_2eproto = nullptr;
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_lobby_2eproto = nullptr;
 
@@ -141,6 +165,20 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_lobby_2eproto::offsets[] PROTO
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::wzbgame::message::lobby::CharacterSelectResponse, result_),
   0,
+  PROTOBUF_FIELD_OFFSET(::wzbgame::message::lobby::InGameEnterRequest, _has_bits_),
+  PROTOBUF_FIELD_OFFSET(::wzbgame::message::lobby::InGameEnterRequest, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::wzbgame::message::lobby::InGameEnterRequest, character_id_),
+  0,
+  PROTOBUF_FIELD_OFFSET(::wzbgame::message::lobby::InGameEnterResponse, _has_bits_),
+  PROTOBUF_FIELD_OFFSET(::wzbgame::message::lobby::InGameEnterResponse, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::wzbgame::message::lobby::InGameEnterResponse, result_),
+  0,
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, 6, sizeof(::wzbgame::message::lobby::CharacterCreateRequest)},
@@ -149,6 +187,8 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 21, 27, sizeof(::wzbgame::message::lobby::CharacterDeleteResponse)},
   { 28, 34, sizeof(::wzbgame::message::lobby::CharacterSelectRequest)},
   { 35, 41, sizeof(::wzbgame::message::lobby::CharacterSelectResponse)},
+  { 42, 48, sizeof(::wzbgame::message::lobby::InGameEnterRequest)},
+  { 49, 55, sizeof(::wzbgame::message::lobby::InGameEnterResponse)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -158,6 +198,8 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::wzbgame::message::lobby::_CharacterDeleteResponse_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::wzbgame::message::lobby::_CharacterSelectRequest_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::wzbgame::message::lobby::_CharacterSelectResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::wzbgame::message::lobby::_InGameEnterRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::wzbgame::message::lobby::_InGameEnterResponse_default_instance_),
 };
 
 const char descriptor_table_protodef_lobby_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
@@ -171,12 +213,15 @@ const char descriptor_table_protodef_lobby_2eproto[] PROTOBUF_SECTION_VARIABLE(p
   "\210\001\001B\t\n\007_Result\"D\n\026CharacterSelectRequest"
   "\022\031\n\014character_id\030\001 \001(\014H\000\210\001\001B\017\n\r_characte"
   "r_id\"9\n\027CharacterSelectResponse\022\023\n\006Resul"
-  "t\030\001 \001(\005H\000\210\001\001B\t\n\007_Resultb\006proto3"
+  "t\030\001 \001(\005H\000\210\001\001B\t\n\007_Result\"@\n\022InGameEnterRe"
+  "quest\022\031\n\014character_id\030\001 \001(\014H\000\210\001\001B\017\n\r_cha"
+  "racter_id\"5\n\023InGameEnterResponse\022\023\n\006Resu"
+  "lt\030\001 \001(\005H\000\210\001\001B\t\n\007_Resultb\006proto3"
   ;
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_lobby_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_lobby_2eproto = {
-  false, false, 431, descriptor_table_protodef_lobby_2eproto, "lobby.proto", 
-  &descriptor_table_lobby_2eproto_once, nullptr, 0, 6,
+  false, false, 552, descriptor_table_protodef_lobby_2eproto, "lobby.proto", 
+  &descriptor_table_lobby_2eproto_once, nullptr, 0, 8,
   schemas, file_default_instances, TableStruct_lobby_2eproto::offsets,
   file_level_metadata_lobby_2eproto, file_level_enum_descriptors_lobby_2eproto, file_level_service_descriptors_lobby_2eproto,
 };
@@ -1402,6 +1447,410 @@ void CharacterSelectResponse::InternalSwap(CharacterSelectResponse* other) {
       file_level_metadata_lobby_2eproto[5]);
 }
 
+// ===================================================================
+
+class InGameEnterRequest::_Internal {
+ public:
+  using HasBits = decltype(std::declval<InGameEnterRequest>()._has_bits_);
+  static void set_has_character_id(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
+};
+
+InGameEnterRequest::InGameEnterRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor();
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
+  // @@protoc_insertion_point(arena_constructor:wzbgame.message.lobby.InGameEnterRequest)
+}
+InGameEnterRequest::InGameEnterRequest(const InGameEnterRequest& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
+      _has_bits_(from._has_bits_) {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  character_id_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (from._internal_has_character_id()) {
+    character_id_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_character_id(), 
+      GetArenaForAllocation());
+  }
+  // @@protoc_insertion_point(copy_constructor:wzbgame.message.lobby.InGameEnterRequest)
+}
+
+inline void InGameEnterRequest::SharedCtor() {
+character_id_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+
+InGameEnterRequest::~InGameEnterRequest() {
+  // @@protoc_insertion_point(destructor:wzbgame.message.lobby.InGameEnterRequest)
+  if (GetArenaForAllocation() != nullptr) return;
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+inline void InGameEnterRequest::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  character_id_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+
+void InGameEnterRequest::ArenaDtor(void* object) {
+  InGameEnterRequest* _this = reinterpret_cast< InGameEnterRequest* >(object);
+  (void)_this;
+}
+void InGameEnterRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void InGameEnterRequest::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+
+void InGameEnterRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:wzbgame.message.lobby.InGameEnterRequest)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    character_id_.ClearNonDefaultToEmpty();
+  }
+  _has_bits_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* InGameEnterRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // optional bytes character_id = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          auto str = _internal_mutable_character_id();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag == 0) || ((tag & 7) == 4)) {
+          CHK_(ptr);
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  _has_bits_.Or(has_bits);
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* InGameEnterRequest::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:wzbgame.message.lobby.InGameEnterRequest)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // optional bytes character_id = 1;
+  if (_internal_has_character_id()) {
+    target = stream->WriteBytesMaybeAliased(
+        1, this->_internal_character_id(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:wzbgame.message.lobby.InGameEnterRequest)
+  return target;
+}
+
+size_t InGameEnterRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:wzbgame.message.lobby.InGameEnterRequest)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // optional bytes character_id = 1;
+  cached_has_bits = _has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
+        this->_internal_character_id());
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData InGameEnterRequest::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    InGameEnterRequest::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*InGameEnterRequest::GetClassData() const { return &_class_data_; }
+
+void InGameEnterRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message&from) {
+  static_cast<InGameEnterRequest *>(to)->MergeFrom(
+      static_cast<const InGameEnterRequest &>(from));
+}
+
+
+void InGameEnterRequest::MergeFrom(const InGameEnterRequest& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:wzbgame.message.lobby.InGameEnterRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_has_character_id()) {
+    _internal_set_character_id(from._internal_character_id());
+  }
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void InGameEnterRequest::CopyFrom(const InGameEnterRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:wzbgame.message.lobby.InGameEnterRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool InGameEnterRequest::IsInitialized() const {
+  return true;
+}
+
+void InGameEnterRequest::InternalSwap(InGameEnterRequest* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_has_bits_[0], other->_has_bits_[0]);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &character_id_, GetArenaForAllocation(),
+      &other->character_id_, other->GetArenaForAllocation()
+  );
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata InGameEnterRequest::GetMetadata() const {
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_lobby_2eproto_getter, &descriptor_table_lobby_2eproto_once,
+      file_level_metadata_lobby_2eproto[6]);
+}
+
+// ===================================================================
+
+class InGameEnterResponse::_Internal {
+ public:
+  using HasBits = decltype(std::declval<InGameEnterResponse>()._has_bits_);
+  static void set_has_result(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
+};
+
+InGameEnterResponse::InGameEnterResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor();
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
+  // @@protoc_insertion_point(arena_constructor:wzbgame.message.lobby.InGameEnterResponse)
+}
+InGameEnterResponse::InGameEnterResponse(const InGameEnterResponse& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
+      _has_bits_(from._has_bits_) {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  result_ = from.result_;
+  // @@protoc_insertion_point(copy_constructor:wzbgame.message.lobby.InGameEnterResponse)
+}
+
+inline void InGameEnterResponse::SharedCtor() {
+result_ = 0;
+}
+
+InGameEnterResponse::~InGameEnterResponse() {
+  // @@protoc_insertion_point(destructor:wzbgame.message.lobby.InGameEnterResponse)
+  if (GetArenaForAllocation() != nullptr) return;
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+inline void InGameEnterResponse::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+}
+
+void InGameEnterResponse::ArenaDtor(void* object) {
+  InGameEnterResponse* _this = reinterpret_cast< InGameEnterResponse* >(object);
+  (void)_this;
+}
+void InGameEnterResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void InGameEnterResponse::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+
+void InGameEnterResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:wzbgame.message.lobby.InGameEnterResponse)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  result_ = 0;
+  _has_bits_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* InGameEnterResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // optional int32 Result = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+          _Internal::set_has_result(&has_bits);
+          result_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag == 0) || ((tag & 7) == 4)) {
+          CHK_(ptr);
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  _has_bits_.Or(has_bits);
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* InGameEnterResponse::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:wzbgame.message.lobby.InGameEnterResponse)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // optional int32 Result = 1;
+  if (_internal_has_result()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(1, this->_internal_result(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:wzbgame.message.lobby.InGameEnterResponse)
+  return target;
+}
+
+size_t InGameEnterResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:wzbgame.message.lobby.InGameEnterResponse)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // optional int32 Result = 1;
+  cached_has_bits = _has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
+        this->_internal_result());
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData InGameEnterResponse::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    InGameEnterResponse::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*InGameEnterResponse::GetClassData() const { return &_class_data_; }
+
+void InGameEnterResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message&from) {
+  static_cast<InGameEnterResponse *>(to)->MergeFrom(
+      static_cast<const InGameEnterResponse &>(from));
+}
+
+
+void InGameEnterResponse::MergeFrom(const InGameEnterResponse& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:wzbgame.message.lobby.InGameEnterResponse)
+  GOOGLE_DCHECK_NE(&from, this);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_has_result()) {
+    _internal_set_result(from._internal_result());
+  }
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void InGameEnterResponse::CopyFrom(const InGameEnterResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:wzbgame.message.lobby.InGameEnterResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool InGameEnterResponse::IsInitialized() const {
+  return true;
+}
+
+void InGameEnterResponse::InternalSwap(InGameEnterResponse* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_has_bits_[0], other->_has_bits_[0]);
+  swap(result_, other->result_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata InGameEnterResponse::GetMetadata() const {
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_lobby_2eproto_getter, &descriptor_table_lobby_2eproto_once,
+      file_level_metadata_lobby_2eproto[7]);
+}
+
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace lobby
 }  // namespace message
@@ -1424,6 +1873,12 @@ template<> PROTOBUF_NOINLINE ::wzbgame::message::lobby::CharacterSelectRequest* 
 }
 template<> PROTOBUF_NOINLINE ::wzbgame::message::lobby::CharacterSelectResponse* Arena::CreateMaybeMessage< ::wzbgame::message::lobby::CharacterSelectResponse >(Arena* arena) {
   return Arena::CreateMessageInternal< ::wzbgame::message::lobby::CharacterSelectResponse >(arena);
+}
+template<> PROTOBUF_NOINLINE ::wzbgame::message::lobby::InGameEnterRequest* Arena::CreateMaybeMessage< ::wzbgame::message::lobby::InGameEnterRequest >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::wzbgame::message::lobby::InGameEnterRequest >(arena);
+}
+template<> PROTOBUF_NOINLINE ::wzbgame::message::lobby::InGameEnterResponse* Arena::CreateMaybeMessage< ::wzbgame::message::lobby::InGameEnterResponse >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::wzbgame::message::lobby::InGameEnterResponse >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 

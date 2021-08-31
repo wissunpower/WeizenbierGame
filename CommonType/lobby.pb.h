@@ -46,7 +46,7 @@ struct TableStruct_lobby_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxiliaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[6]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[8]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -74,6 +74,12 @@ extern CharacterSelectRequestDefaultTypeInternal _CharacterSelectRequest_default
 class CharacterSelectResponse;
 struct CharacterSelectResponseDefaultTypeInternal;
 extern CharacterSelectResponseDefaultTypeInternal _CharacterSelectResponse_default_instance_;
+class InGameEnterRequest;
+struct InGameEnterRequestDefaultTypeInternal;
+extern InGameEnterRequestDefaultTypeInternal _InGameEnterRequest_default_instance_;
+class InGameEnterResponse;
+struct InGameEnterResponseDefaultTypeInternal;
+extern InGameEnterResponseDefaultTypeInternal _InGameEnterResponse_default_instance_;
 }  // namespace lobby
 }  // namespace message
 }  // namespace wzbgame
@@ -84,6 +90,8 @@ template<> ::wzbgame::message::lobby::CharacterDeleteRequest* Arena::CreateMaybe
 template<> ::wzbgame::message::lobby::CharacterDeleteResponse* Arena::CreateMaybeMessage<::wzbgame::message::lobby::CharacterDeleteResponse>(Arena*);
 template<> ::wzbgame::message::lobby::CharacterSelectRequest* Arena::CreateMaybeMessage<::wzbgame::message::lobby::CharacterSelectRequest>(Arena*);
 template<> ::wzbgame::message::lobby::CharacterSelectResponse* Arena::CreateMaybeMessage<::wzbgame::message::lobby::CharacterSelectResponse>(Arena*);
+template<> ::wzbgame::message::lobby::InGameEnterRequest* Arena::CreateMaybeMessage<::wzbgame::message::lobby::InGameEnterRequest>(Arena*);
+template<> ::wzbgame::message::lobby::InGameEnterResponse* Arena::CreateMaybeMessage<::wzbgame::message::lobby::InGameEnterResponse>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 namespace wzbgame {
 namespace message {
@@ -968,6 +976,299 @@ class CharacterSelectResponse final :
   ::PROTOBUF_NAMESPACE_ID::int32 result_;
   friend struct ::TableStruct_lobby_2eproto;
 };
+// -------------------------------------------------------------------
+
+class InGameEnterRequest final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:wzbgame.message.lobby.InGameEnterRequest) */ {
+ public:
+  inline InGameEnterRequest() : InGameEnterRequest(nullptr) {}
+  ~InGameEnterRequest() override;
+  explicit constexpr InGameEnterRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  InGameEnterRequest(const InGameEnterRequest& from);
+  InGameEnterRequest(InGameEnterRequest&& from) noexcept
+    : InGameEnterRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline InGameEnterRequest& operator=(const InGameEnterRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline InGameEnterRequest& operator=(InGameEnterRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const InGameEnterRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const InGameEnterRequest* internal_default_instance() {
+    return reinterpret_cast<const InGameEnterRequest*>(
+               &_InGameEnterRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    6;
+
+  friend void swap(InGameEnterRequest& a, InGameEnterRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(InGameEnterRequest* other) {
+    if (other == this) return;
+    if (GetOwningArena() == other->GetOwningArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(InGameEnterRequest* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline InGameEnterRequest* New() const final {
+    return new InGameEnterRequest();
+  }
+
+  InGameEnterRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<InGameEnterRequest>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const InGameEnterRequest& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const InGameEnterRequest& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to, const ::PROTOBUF_NAMESPACE_ID::Message&from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(InGameEnterRequest* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "wzbgame.message.lobby.InGameEnterRequest";
+  }
+  protected:
+  explicit InGameEnterRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kCharacterIdFieldNumber = 1,
+  };
+  // optional bytes character_id = 1;
+  bool has_character_id() const;
+  private:
+  bool _internal_has_character_id() const;
+  public:
+  void clear_character_id();
+  const std::string& character_id() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_character_id(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_character_id();
+  PROTOBUF_MUST_USE_RESULT std::string* release_character_id();
+  void set_allocated_character_id(std::string* character_id);
+  private:
+  const std::string& _internal_character_id() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_character_id(const std::string& value);
+  std::string* _internal_mutable_character_id();
+  public:
+
+  // @@protoc_insertion_point(class_scope:wzbgame.message.lobby.InGameEnterRequest)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr character_id_;
+  friend struct ::TableStruct_lobby_2eproto;
+};
+// -------------------------------------------------------------------
+
+class InGameEnterResponse final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:wzbgame.message.lobby.InGameEnterResponse) */ {
+ public:
+  inline InGameEnterResponse() : InGameEnterResponse(nullptr) {}
+  ~InGameEnterResponse() override;
+  explicit constexpr InGameEnterResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  InGameEnterResponse(const InGameEnterResponse& from);
+  InGameEnterResponse(InGameEnterResponse&& from) noexcept
+    : InGameEnterResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline InGameEnterResponse& operator=(const InGameEnterResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline InGameEnterResponse& operator=(InGameEnterResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const InGameEnterResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const InGameEnterResponse* internal_default_instance() {
+    return reinterpret_cast<const InGameEnterResponse*>(
+               &_InGameEnterResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    7;
+
+  friend void swap(InGameEnterResponse& a, InGameEnterResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(InGameEnterResponse* other) {
+    if (other == this) return;
+    if (GetOwningArena() == other->GetOwningArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(InGameEnterResponse* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline InGameEnterResponse* New() const final {
+    return new InGameEnterResponse();
+  }
+
+  InGameEnterResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<InGameEnterResponse>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const InGameEnterResponse& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const InGameEnterResponse& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to, const ::PROTOBUF_NAMESPACE_ID::Message&from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(InGameEnterResponse* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "wzbgame.message.lobby.InGameEnterResponse";
+  }
+  protected:
+  explicit InGameEnterResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kResultFieldNumber = 1,
+  };
+  // optional int32 Result = 1;
+  bool has_result() const;
+  private:
+  bool _internal_has_result() const;
+  public:
+  void clear_result();
+  ::PROTOBUF_NAMESPACE_ID::int32 result() const;
+  void set_result(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_result() const;
+  void _internal_set_result(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:wzbgame.message.lobby.InGameEnterResponse)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  ::PROTOBUF_NAMESPACE_ID::int32 result_;
+  friend struct ::TableStruct_lobby_2eproto;
+};
 // ===================================================================
 
 
@@ -1257,9 +1558,107 @@ inline void CharacterSelectResponse::set_result(::PROTOBUF_NAMESPACE_ID::int32 v
   // @@protoc_insertion_point(field_set:wzbgame.message.lobby.CharacterSelectResponse.Result)
 }
 
+// -------------------------------------------------------------------
+
+// InGameEnterRequest
+
+// optional bytes character_id = 1;
+inline bool InGameEnterRequest::_internal_has_character_id() const {
+  bool value = (_has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
+inline bool InGameEnterRequest::has_character_id() const {
+  return _internal_has_character_id();
+}
+inline void InGameEnterRequest::clear_character_id() {
+  character_id_.ClearToEmpty();
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline const std::string& InGameEnterRequest::character_id() const {
+  // @@protoc_insertion_point(field_get:wzbgame.message.lobby.InGameEnterRequest.character_id)
+  return _internal_character_id();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void InGameEnterRequest::set_character_id(ArgT0&& arg0, ArgT... args) {
+ _has_bits_[0] |= 0x00000001u;
+ character_id_.SetBytes(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:wzbgame.message.lobby.InGameEnterRequest.character_id)
+}
+inline std::string* InGameEnterRequest::mutable_character_id() {
+  std::string* _s = _internal_mutable_character_id();
+  // @@protoc_insertion_point(field_mutable:wzbgame.message.lobby.InGameEnterRequest.character_id)
+  return _s;
+}
+inline const std::string& InGameEnterRequest::_internal_character_id() const {
+  return character_id_.Get();
+}
+inline void InGameEnterRequest::_internal_set_character_id(const std::string& value) {
+  _has_bits_[0] |= 0x00000001u;
+  character_id_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
+}
+inline std::string* InGameEnterRequest::_internal_mutable_character_id() {
+  _has_bits_[0] |= 0x00000001u;
+  return character_id_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
+}
+inline std::string* InGameEnterRequest::release_character_id() {
+  // @@protoc_insertion_point(field_release:wzbgame.message.lobby.InGameEnterRequest.character_id)
+  if (!_internal_has_character_id()) {
+    return nullptr;
+  }
+  _has_bits_[0] &= ~0x00000001u;
+  return character_id_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
+}
+inline void InGameEnterRequest::set_allocated_character_id(std::string* character_id) {
+  if (character_id != nullptr) {
+    _has_bits_[0] |= 0x00000001u;
+  } else {
+    _has_bits_[0] &= ~0x00000001u;
+  }
+  character_id_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), character_id,
+      GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set_allocated:wzbgame.message.lobby.InGameEnterRequest.character_id)
+}
+
+// -------------------------------------------------------------------
+
+// InGameEnterResponse
+
+// optional int32 Result = 1;
+inline bool InGameEnterResponse::_internal_has_result() const {
+  bool value = (_has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
+inline bool InGameEnterResponse::has_result() const {
+  return _internal_has_result();
+}
+inline void InGameEnterResponse::clear_result() {
+  result_ = 0;
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 InGameEnterResponse::_internal_result() const {
+  return result_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 InGameEnterResponse::result() const {
+  // @@protoc_insertion_point(field_get:wzbgame.message.lobby.InGameEnterResponse.Result)
+  return _internal_result();
+}
+inline void InGameEnterResponse::_internal_set_result(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _has_bits_[0] |= 0x00000001u;
+  result_ = value;
+}
+inline void InGameEnterResponse::set_result(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_result(value);
+  // @@protoc_insertion_point(field_set:wzbgame.message.lobby.InGameEnterResponse.Result)
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

@@ -10,21 +10,23 @@ package wzbgame.message;
 
 enum MessageType
 {
-	UnknownMessageType =		0;
+	UnknownMessageType			=			 0;
 
-	ChatRequest =				10;
-	ChatResponse =				11;
-	ChatNotification =			12;
+	ChatRequest					=			10;
+	ChatResponse				=			11;
+	ChatNotification			=			12;
 
-	LoginRequest =				20;
-	LoginResponse =				21;
+	LoginRequest				=			20;
+	LoginResponse				=			21;
 	
-	CharacterCreateRequest =	30;
-	CharacterCreateResponse =	31;
-	CharacterDeleteRequest =	40;
-	CharacterDeleteResponse =	41;
-	CharacterSelectRequest =	50;
-	CharacterSelectResponse =	51;
+	CharacterCreateRequest		=			30;
+	CharacterCreateResponse		=			31;
+	CharacterDeleteRequest		=			40;
+	CharacterDeleteResponse		=			41;
+	CharacterSelectRequest		=			50;
+	CharacterSelectResponse		=			51;
+	InGameEnterRequest			=			60;
+	InGameEnterResponse			=			61;
 }
 
 
