@@ -118,12 +118,12 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>..\caf\libcaf_core;..\caf\libcaf_io;..\protobuf\src;..\CommonType;..\ServerUtility;..\ServerZone;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\caf\libcaf_core;..\caf\libcaf_io;..\protobuf\src;..\CommonType;..\ServerUtility;..\ServerZone;..\ServerContents;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>..\caf\libcaf_core\$(Configuration)\caf_core.lib;..\caf\libcaf_io\$(Configuration)\caf_io.lib;ws2_32.lib;..\$(IntDir)CommonType.lib;..\$(IntDir)ServerUtility.lib;..\$(IntDir)ServerZone.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\caf\libcaf_core\$(Configuration)\caf_core.lib;..\caf\libcaf_io\$(Configuration)\caf_io.lib;ws2_32.lib;..\$(IntDir)CommonType.lib;..\$(IntDir)ServerUtility.lib;..\$(IntDir)ServerZone.lib;..\$(IntDir)ServerContents.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -148,8 +148,6 @@
     <ClCompile Include="handler\ChatHandler.cpp" />
     <ClCompile Include="handler\LobbyHandler.cpp" />
     <ClCompile Include="handler\LoginHandler.cpp" />
-    <ClCompile Include="model\PlayCharacter.cpp" />
-    <ClCompile Include="model\User.cpp" />
     <ClCompile Include="ServerLauncher.cpp" />
     <ClCompile Include="SingletonInstance.cpp" />
   </ItemGroup>
@@ -160,8 +158,6 @@
     <ClInclude Include="handler\LobbyHandler.h" />
     <ClInclude Include="handler\LoginHandler.h" />
     <ClInclude Include="interface\IMessageHandler.h" />
-    <ClInclude Include="model\PlayCharacter.h" />
-    <ClInclude Include="model\User.h" />
     <ClInclude Include="SingletonInstance.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

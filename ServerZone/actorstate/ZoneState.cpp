@@ -1,6 +1,9 @@
 
 #include	"caf/all.hpp"
 
+#include	"atomdef/ContentsEntity.h"
+#include	"model/PlayCharacter.h"
+
 #include	"ZoneState.h"
 #include	"../atomdef/ZoneMove.h"
 
@@ -29,9 +32,11 @@ caf::behavior ZoneState::make_behavior()
 
 		return x + y;
 	},
-		[this](zone_move::enter_ingame_request_atom)
+		[this](zone_move::enter_ingame_request_atom, PlayCharacter playCharacter)
 	{
 		caf::aout(self) << "Zone received enter_ingame_atom." << std::endl;
+
+		caf::aout(self) << "Entered Character Name : " << playCharacter.GetName() << std::endl;
 
 		return caf::make_message(zone_move::enter_ingame_response_atom_v);
 	},

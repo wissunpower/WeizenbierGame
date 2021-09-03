@@ -14,10 +14,11 @@ CAF_POP_WARNINGS
 
 #include	"ServerUtility.h"
 
+#include	"model/User.h"
+
 #include	"LoginHandler.h"
 #include	"../CAF_Atom.h"
 #include	"../ClientState.h"
-#include	"../model/User.h"
 
 
 LoginHandler::LoginHandler(caf::event_based_actor* self, User& srcUser)

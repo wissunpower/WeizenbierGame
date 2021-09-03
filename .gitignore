@@ -17,5 +17,6 @@ CommonType/x64/Debug/*
 ServerLauncher/x64/Debug/*
 ServerUtility/x64/Debug/*
 ServerZone/x64/Debug/*
+ServerContents/x64/Debug/*
 TestClient/x64/Debug/*
 *.lastcodeanalysissucceeded

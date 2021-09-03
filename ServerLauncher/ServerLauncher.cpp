@@ -18,6 +18,8 @@ CAF_POP_WARNINGS
 
 #include "ServerUtility.h"
 
+#include "ServerContents.h"
+
 #include "SingletonInstance.h"
 #include "ClientState.h"
 #include "CAF_Atom.h"
@@ -217,7 +219,11 @@ void caf_main(caf::actor_system& system, const ActorSystemConfig& cfg)
 	RunServer(system, cfg);
 }
 
-CAF_MAIN(caf::id_block::server_launcher, caf::id_block::zone_move, caf::io::middleman)
+CAF_MAIN(
+	caf::id_block::server_launcher,
+	caf::id_block::contents_entity,
+	caf::id_block::zone_move,
+	caf::io::middleman)
 
 // 프로그램 실행: <Ctrl+F5> 또는 [디버그] > [디버깅하지 않고 시작] 메뉴
 // 프로그램 디버그: <F5> 키 또는 [디버그] > [디버깅 시작] 메뉴

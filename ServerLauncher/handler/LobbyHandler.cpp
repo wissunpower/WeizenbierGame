@@ -14,6 +14,8 @@ CAF_POP_WARNINGS
 
 #include	"ServerUtility.h"
 
+#include	"ServerContents.h"
+
 #include	"atomdef/ZoneMove.h"
 #include	"manager/ZoneSupervisor.h"
 
@@ -21,7 +23,6 @@ CAF_POP_WARNINGS
 #include	"../CAF_Atom.h"
 #include	"../SingletonInstance.h"
 #include	"../ClientState.h"
-#include	"../model/User.h"
 
 
 LobbyHandler::LobbyHandler(caf::event_based_actor* self, User& srcUser)
@@ -123,7 +124,7 @@ caf::message_handler LobbyHandler::GetMessageHandler() const
 		{
 			auto message = ToActorMessageArg<wzbgame::message::lobby::InGameEnterRequest>(stream);
 
-			self->request(ZoneSupervisorInstance->GetActor(), caf::infinite, zone_move::enter_ingame_request_atom_v).then(
+			self->request(ZoneSupervisorInstance->GetActor(), caf::infinite, zone_move::enter_ingame_request_atom_v, user.GetCurrentPlayCharacter()).then(
 				[this](zone_move::enter_ingame_response_atom)
 			{
 				caf::aout(self) << "LobbyHandler received enter_ingame_response_atom." << std::endl;

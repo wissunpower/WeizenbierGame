@@ -14,9 +14,10 @@ CAF_POP_WARNINGS
 
 #include	"ServerUtility.h"
 
+#include	"model/User.h"
+
 #include	"ChatHandler.h"
 #include	"../CAF_Atom.h"
-#include	"../model/User.h"
 
 
 ChatHandler::ChatHandler(caf::event_based_actor* self, User& srcUser)
