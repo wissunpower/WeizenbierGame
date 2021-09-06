@@ -2,6 +2,9 @@
 syntax = "proto3";
 
 
+import "model.proto";
+
+
 package wzbgame.message.lobby;
 
 
@@ -43,4 +46,5 @@ message InGameEnterRequest
 message InGameEnterResponse
 {
 	optional int32 Result = 1;
+	optional wzbgame.model.Position position = 2;
 }

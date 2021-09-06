@@ -31,6 +31,7 @@
 #include <google/protobuf/repeated_field.h>  // IWYU pragma: export
 #include <google/protobuf/extension_set.h>  // IWYU pragma: export
 #include <google/protobuf/unknown_field_set.h>
+#include "model.pb.h"
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
 #define PROTOBUF_INTERNAL_EXPORT_lobby_2eproto
@@ -1242,8 +1243,27 @@ class InGameEnterResponse final :
   // accessors -------------------------------------------------------
 
   enum : int {
+    kPositionFieldNumber = 2,
     kResultFieldNumber = 1,
   };
+  // optional .wzbgame.model.Position position = 2;
+  bool has_position() const;
+  private:
+  bool _internal_has_position() const;
+  public:
+  void clear_position();
+  const ::wzbgame::model::Position& position() const;
+  PROTOBUF_MUST_USE_RESULT ::wzbgame::model::Position* release_position();
+  ::wzbgame::model::Position* mutable_position();
+  void set_allocated_position(::wzbgame::model::Position* position);
+  private:
+  const ::wzbgame::model::Position& _internal_position() const;
+  ::wzbgame::model::Position* _internal_mutable_position();
+  public:
+  void unsafe_arena_set_allocated_position(
+      ::wzbgame::model::Position* position);
+  ::wzbgame::model::Position* unsafe_arena_release_position();
+
   // optional int32 Result = 1;
   bool has_result() const;
   private:
@@ -1266,6 +1286,7 @@ class InGameEnterResponse final :
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  ::wzbgame::model::Position* position_;
   ::PROTOBUF_NAMESPACE_ID::int32 result_;
   friend struct ::TableStruct_lobby_2eproto;
 };
@@ -1626,7 +1647,7 @@ inline void InGameEnterRequest::set_allocated_character_id(std::string* characte
 
 // optional int32 Result = 1;
 inline bool InGameEnterResponse::_internal_has_result() const {
-  bool value = (_has_bits_[0] & 0x00000001u) != 0;
+  bool value = (_has_bits_[0] & 0x00000002u) != 0;
   return value;
 }
 inline bool InGameEnterResponse::has_result() const {
@@ -1634,7 +1655,7 @@ inline bool InGameEnterResponse::has_result() const {
 }
 inline void InGameEnterResponse::clear_result() {
   result_ = 0;
-  _has_bits_[0] &= ~0x00000001u;
+  _has_bits_[0] &= ~0x00000002u;
 }
 inline ::PROTOBUF_NAMESPACE_ID::int32 InGameEnterResponse::_internal_result() const {
   return result_;
@@ -1644,12 +1665,100 @@ inline ::PROTOBUF_NAMESPACE_ID::int32 InGameEnterResponse::result() const {
   return _internal_result();
 }
 inline void InGameEnterResponse::_internal_set_result(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  _has_bits_[0] |= 0x00000001u;
+  _has_bits_[0] |= 0x00000002u;
   result_ = value;
 }
 inline void InGameEnterResponse::set_result(::PROTOBUF_NAMESPACE_ID::int32 value) {
   _internal_set_result(value);
   // @@protoc_insertion_point(field_set:wzbgame.message.lobby.InGameEnterResponse.Result)
+}
+
+// optional .wzbgame.model.Position position = 2;
+inline bool InGameEnterResponse::_internal_has_position() const {
+  bool value = (_has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || position_ != nullptr);
+  return value;
+}
+inline bool InGameEnterResponse::has_position() const {
+  return _internal_has_position();
+}
+inline const ::wzbgame::model::Position& InGameEnterResponse::_internal_position() const {
+  const ::wzbgame::model::Position* p = position_;
+  return p != nullptr ? *p : reinterpret_cast<const ::wzbgame::model::Position&>(
+      ::wzbgame::model::_Position_default_instance_);
+}
+inline const ::wzbgame::model::Position& InGameEnterResponse::position() const {
+  // @@protoc_insertion_point(field_get:wzbgame.message.lobby.InGameEnterResponse.position)
+  return _internal_position();
+}
+inline void InGameEnterResponse::unsafe_arena_set_allocated_position(
+    ::wzbgame::model::Position* position) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(position_);
+  }
+  position_ = position;
+  if (position) {
+    _has_bits_[0] |= 0x00000001u;
+  } else {
+    _has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:wzbgame.message.lobby.InGameEnterResponse.position)
+}
+inline ::wzbgame::model::Position* InGameEnterResponse::release_position() {
+  _has_bits_[0] &= ~0x00000001u;
+  ::wzbgame::model::Position* temp = position_;
+  position_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::wzbgame::model::Position* InGameEnterResponse::unsafe_arena_release_position() {
+  // @@protoc_insertion_point(field_release:wzbgame.message.lobby.InGameEnterResponse.position)
+  _has_bits_[0] &= ~0x00000001u;
+  ::wzbgame::model::Position* temp = position_;
+  position_ = nullptr;
+  return temp;
+}
+inline ::wzbgame::model::Position* InGameEnterResponse::_internal_mutable_position() {
+  _has_bits_[0] |= 0x00000001u;
+  if (position_ == nullptr) {
+    auto* p = CreateMaybeMessage<::wzbgame::model::Position>(GetArenaForAllocation());
+    position_ = p;
+  }
+  return position_;
+}
+inline ::wzbgame::model::Position* InGameEnterResponse::mutable_position() {
+  ::wzbgame::model::Position* _msg = _internal_mutable_position();
+  // @@protoc_insertion_point(field_mutable:wzbgame.message.lobby.InGameEnterResponse.position)
+  return _msg;
+}
+inline void InGameEnterResponse::set_allocated_position(::wzbgame::model::Position* position) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(position_);
+  }
+  if (position) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper<
+            ::PROTOBUF_NAMESPACE_ID::MessageLite>::GetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(position));
+    if (message_arena != submessage_arena) {
+      position = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, position, submessage_arena);
+    }
+    _has_bits_[0] |= 0x00000001u;
+  } else {
+    _has_bits_[0] &= ~0x00000001u;
+  }
+  position_ = position;
+  // @@protoc_insertion_point(field_set_allocated:wzbgame.message.lobby.InGameEnterResponse.position)
 }
 
 #ifdef __GNUC__

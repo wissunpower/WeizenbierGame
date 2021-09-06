@@ -1,0 +1,13 @@
+
+syntax = "proto3";
+
+
+package wzbgame.model;
+
+
+message Position
+{
+	float point_x = 1;
+	float point_y = 2;
+	float point_z = 3;
+}
