@@ -38,7 +38,28 @@ CAF_BEGIN_TYPE_ID_BLOCK(test_client, first_custom_type_id)
     CAF_ADD_ATOM(test_client, ingame_enter_request_atom)
     CAF_ADD_ATOM(test_client, ingame_enter_response_atom)
 
+
+    CAF_ADD_TYPE_ID(test_client, (wzbgame::model::Position))
+
 CAF_END_TYPE_ID_BLOCK(test_client)
+
+
+namespace caf
+{
+    template <>
+    struct inspector_access<wzbgame::model::Position> : inspector_access_base<wzbgame::model::Position>
+    {
+        template <typename Inspector>
+        static bool apply(Inspector& f, wzbgame::model::Position& src)
+        {
+            //return f.object(src).fields(f.field("pointX", src.point_x()),
+            //							f.field("pointY", src.point_y()),
+            //							f.field("pointZ", src.point_z()));
+
+            return true;
+        }
+    };
+}
 
 
 // Utility function to print an exit message with custom name
@@ -188,9 +209,10 @@ caf::behavior HandleMessage(caf::stateful_actor<ClientInfo>* self)
 
         return caf::make_message(send_to_server_atom_v, wrapped.SerializeAsString());
     },
-        [=](ingame_enter_response_atom, int result)
+        [=](ingame_enter_response_atom, int result, wzbgame::model::Position startingPosition)
     {
         caf::aout(self) << "InGame Enter Result : " << result << std::endl;
+        caf::aout(self) << "Starting Position -> X : " << startingPosition.point_x() << ", Y : " << startingPosition.point_y() << ", Z : " << startingPosition.point_z() << std::endl;
 
         return caf::make_message();
     },
@@ -328,7 +350,7 @@ void TransferNetworkMessage(caf::io::broker* self, caf::io::connection_handle hd
         {
             wzbgame::message::lobby::InGameEnterResponse pm;
             p.message().UnpackTo(&pm);
-            self->send(buddy, ingame_enter_response_atom_v, pm.result());
+            self->send(buddy, ingame_enter_response_atom_v, pm.result(), pm.position());
         }
         break;
 
