@@ -22,6 +22,9 @@
     <Filter Include="헤더 파일\atomdef">
       <UniqueIdentifier>{3b643a7e-dd33-4820-95ea-da66cc9606ce}</UniqueIdentifier>
     </Filter>
+    <Filter Include="헤더 파일\interface">
+      <UniqueIdentifier>{d0c48617-325b-46fa-817e-bf912956ddc7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -41,6 +44,15 @@
     </ClInclude>
     <ClInclude Include="ServerContents.h">
       <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\ILocatable.h">
+      <Filter>헤더 파일\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IMoveable.h">
+      <Filter>헤더 파일\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="model\Position.h">
+      <Filter>헤더 파일\model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -35,10 +35,26 @@ caf::behavior ZoneState::make_behavior()
 		[this](zone_move::enter_ingame_request_atom, PlayCharacter playCharacter)
 	{
 		caf::aout(self) << "Zone received enter_ingame_atom." << std::endl;
-
 		caf::aout(self) << "Entered Character Name : " << playCharacter.GetName() << std::endl;
 
-		return caf::make_message(zone_move::enter_ingame_response_atom_v);
+		wzbgame::model::Position startingPosition;
+		startingPosition.set_point_x(21);
+		startingPosition.set_point_y(9);
+		startingPosition.set_point_z(6);
+
+		auto locatableStartingPosition = GetLocatablePosition(startingPosition);
+
+		playCharacter.SetPosition(locatableStartingPosition);
+
+		std::shared_ptr<ILocatable> currentCharacter(new PlayCharacter{ playCharacter });
+		gameObjectList.push_back(currentCharacter);
+
+		return caf::make_message(zone_move::enter_ingame_response_atom_v, locatableStartingPosition);
 	},
 	};
+}
+
+wzbgame::model::Position ZoneState::GetLocatablePosition(const wzbgame::model::Position& src) const
+{
+	return src;
 }

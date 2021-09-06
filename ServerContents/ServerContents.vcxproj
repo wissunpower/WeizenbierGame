@@ -157,7 +157,10 @@
   <ItemGroup>
     <ClInclude Include="atomdef\ContentsEntity.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="interface\ILocatable.h" />
+    <ClInclude Include="interface\IMoveable.h" />
     <ClInclude Include="model\PlayCharacter.h" />
+    <ClInclude Include="model\Position.h" />
     <ClInclude Include="model\User.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="ServerContents.h" />

@@ -125,12 +125,15 @@ caf::message_handler LobbyHandler::GetMessageHandler() const
 			auto message = ToActorMessageArg<wzbgame::message::lobby::InGameEnterRequest>(stream);
 
 			self->request(ZoneSupervisorInstance->GetActor(), caf::infinite, zone_move::enter_ingame_request_atom_v, user.GetCurrentPlayCharacter()).then(
-				[this](zone_move::enter_ingame_response_atom)
+				[this](zone_move::enter_ingame_response_atom, wzbgame::model::Position startingPosition)
 			{
 				caf::aout(self) << "LobbyHandler received enter_ingame_response_atom." << std::endl;
 
 				wzbgame::message::lobby::InGameEnterResponse response;
 				response.set_result(ResultType::Succeed);
+				response.mutable_position()->set_point_x(startingPosition.point_x());
+				response.mutable_position()->set_point_y(startingPosition.point_y());
+				response.mutable_position()->set_point_z(startingPosition.point_z());
 				auto wrapped = MakeWrappedMessage(wzbgame::message::MessageType::InGameEnterResponse, response);
 
 				self->send(self, send_to_client_atom_v, wrapped.SerializeAsString());

@@ -5,8 +5,11 @@
 
 #include	<string>
 
+#include	"../interface/IMoveable.h"
+#include	"Position.h"
 
-class DECLSPEC PlayCharacter
+
+class DECLSPEC PlayCharacter : public IMoveable
 {
 
 public:
@@ -21,10 +24,20 @@ public:
 		name = arg;
 	}
 
+	wzbgame::model::Position GetPosition() const override
+	{
+		return position;
+	}
+
+	void SetPosition(const wzbgame::model::Position& arg)
+	{
+		position = arg;
+	}
 
 private:
 
 	std::string name;
+	wzbgame::model::Position position;
 
 };
 
