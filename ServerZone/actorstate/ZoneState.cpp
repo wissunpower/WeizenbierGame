@@ -38,9 +38,9 @@ caf::behavior ZoneState::make_behavior()
 		caf::aout(self) << "Entered Character Name : " << playCharacter.GetName() << std::endl;
 
 		wzbgame::model::Position startingPosition;
-		startingPosition.set_point_x(21);
-		startingPosition.set_point_y(9);
-		startingPosition.set_point_z(6);
+		startingPosition.set_point_x(0);
+		startingPosition.set_point_y(0);
+		startingPosition.set_point_z(0);
 
 		auto locatableStartingPosition = GetLocatablePosition(startingPosition);
 
@@ -56,5 +56,57 @@ caf::behavior ZoneState::make_behavior()
 
 wzbgame::model::Position ZoneState::GetLocatablePosition(const wzbgame::model::Position& src) const
 {
-	return src;
+	std::map< float, std::map< float, std::map< float, bool > > > positionMap;
+
+	// 다른 대상들이 선점하고 있는 위치를 취합한다.
+	for (auto gameObjectIter = gameObjectList.begin(); gameObjectIter != gameObjectList.end(); ++gameObjectIter)
+	{
+		if (gameObjectIter->get() == nullptr)
+		{
+			continue;
+		}
+
+		const auto& currentPosition = gameObjectIter->get()->GetPosition();
+
+		positionMap[ currentPosition.point_x() ][ currentPosition.point_y() ][ currentPosition.point_z() ] = true;
+	}
+
+	auto dest = src;
+	float offsetX = 0;
+
+	// src 위치에서 가장 가까운 빈 자리를 찾는다.
+	while (true)
+	{
+		auto resultByX = positionMap.find(dest.point_x());
+		if (resultByX == positionMap.end())
+		{
+			break;
+		}
+
+		auto resultByY = resultByX->second.find(dest.point_y());
+		if (resultByY == resultByX->second.end())
+		{
+			break;
+		}
+
+		auto resultByZ = resultByY->second.find(dest.point_z());
+		if (resultByZ == resultByY->second.end() || resultByZ->second == false)
+		{
+			break;
+		}
+
+		// X좌표만 바꾸면서 인접한 빈 위치를 찾는다.
+		if (offsetX > 0)
+		{
+			offsetX *= (-1);
+		}
+		else
+		{
+			offsetX = std::abs(offsetX) + 1;
+		}
+
+		dest.set_point_x(src.point_x() + offsetX);
+	}
+
+	return dest;
 }
