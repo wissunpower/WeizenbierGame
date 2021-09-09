@@ -139,12 +139,25 @@ caf::message_handler LobbyHandler::GetMessageHandler() const
 				self->send(self, send_to_client_atom_v, wrapped.SerializeAsString());
 			}
 				);
+
+			resultValue = ResultType::Succeed;
 		}
 		catch (const WzbContentsException& e)
 		{
 			resultValue = static_cast<ResultType>(e.ResultCode);
 			caf::aout(self) << e.what() << std::endl;
 		}
+
+		if (ResultType::Succeed != resultValue)
+		{
+			wzbgame::message::lobby::InGameEnterResponse failureResponse;
+			failureResponse.set_result(resultValue);
+			auto failureWrapped = MakeWrappedMessage(wzbgame::message::MessageType::InGameEnterResponse, failureResponse);
+
+			return caf::make_message(send_to_client_atom_v, failureWrapped.SerializeAsString());
+		}
+
+		return caf::make_message();
 	},
 	};
 }
