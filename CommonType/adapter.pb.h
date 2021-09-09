@@ -83,12 +83,14 @@ enum MessageType : int {
   CharacterSelectResponse = 51,
   InGameEnterRequest = 60,
   InGameEnterResponse = 61,
+  PositionMoveRequest = 1000,
+  PositionMoveResponse = 1001,
   MessageType_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   MessageType_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool MessageType_IsValid(int value);
 constexpr MessageType MessageType_MIN = UnknownMessageType;
-constexpr MessageType MessageType_MAX = InGameEnterResponse;
+constexpr MessageType MessageType_MAX = PositionMoveResponse;
 constexpr int MessageType_ARRAYSIZE = MessageType_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* MessageType_descriptor();

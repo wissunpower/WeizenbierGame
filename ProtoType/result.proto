@@ -15,4 +15,7 @@ enum ResultType
 	AlreadyExistCharacter		=		10000;
 	NotFoundCharacter			=		10001;
 	InvalidCurrentCharacter		=		10002;
+
+	// 전투(이동) 관련
+	NoPositionWhereMoveable		=		20000;
 }

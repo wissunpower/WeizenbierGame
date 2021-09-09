@@ -27,6 +27,9 @@ enum MessageType
 	CharacterSelectResponse		=			51;
 	InGameEnterRequest			=			60;
 	InGameEnterResponse			=			61;
+
+	PositionMoveRequest			=		  1000;
+	PositionMoveResponse		=		  1001;
 }
 
 

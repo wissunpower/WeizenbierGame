@@ -158,6 +158,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="adapter.pb.h" />
+    <ClInclude Include="battle.pb.h" />
     <ClInclude Include="chat.pb.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="lobby.pb.h" />
@@ -169,6 +170,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="adapter.pb.cc" />
+    <ClCompile Include="battle.pb.cc" />
     <ClCompile Include="chat.pb.cc" />
     <ClCompile Include="CommonType.cpp" />
     <ClCompile Include="lobby.pb.cc" />
@@ -219,6 +221,13 @@
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\ProtoType\model.proto">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"..\protobuf\Debug\protoc.exe" --proto_path="..\ProtoType;..\protobuf\src" --cpp_out=.\ %(Identity)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).pb.h;%(Filename).pb.cc;</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\ProtoType\battle.proto">
       <FileType>Document</FileType>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"..\protobuf\Debug\protoc.exe" --proto_path="..\ProtoType;..\protobuf\src" --cpp_out=.\ %(Identity)</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).pb.h;%(Filename).pb.cc;</Outputs>

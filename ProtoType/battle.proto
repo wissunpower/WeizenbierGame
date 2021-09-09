@@ -1,0 +1,19 @@
+
+syntax = "proto3";
+
+
+import "model.proto";
+
+
+package wzbgame.message.battle;
+
+
+message PositionMoveRequest
+{
+}
+
+message PositionMoveResponse
+{
+	optional int32 Result = 1;
+	optional wzbgame.model.Position position = 2;
+}
