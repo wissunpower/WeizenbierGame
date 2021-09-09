@@ -25,6 +25,7 @@ CAF_POP_WARNINGS
 #include "CAF_Atom.h"
 
 #include "atomdef/ZoneMove.h"
+#include "atomdef/Battle.h"
 #include "manager/ZoneSupervisor.h"
 
 
@@ -223,6 +224,7 @@ CAF_MAIN(
 	caf::id_block::server_launcher,
 	caf::id_block::contents_entity,
 	caf::id_block::zone_move,
+	caf::id_block::battle,
 	caf::io::middleman)
 
 // 프로그램 실행: <Ctrl+F5> 또는 [디버그] > [디버깅하지 않고 시작] 메뉴

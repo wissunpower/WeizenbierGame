@@ -14,6 +14,11 @@ class DECLSPEC PlayCharacter : public IMoveable
 
 public:
 
+	virtual ~PlayCharacter() = default;
+
+
+public:
+
 	std::string GetName() const
 	{
 		return name;
@@ -29,7 +34,7 @@ public:
 		return position;
 	}
 
-	void SetPosition(const wzbgame::model::Position& arg)
+	void SetPosition(const wzbgame::model::Position& arg) override
 	{
 		position = arg;
 	}

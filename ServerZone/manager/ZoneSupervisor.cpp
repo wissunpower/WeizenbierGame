@@ -9,6 +9,7 @@
 #include	"model/PlayCharacter.h"
 
 #include	"../atomdef/ZoneMove.h"
+#include	"../atomdef/Battle.h"
 #include	"../actorstate/ZoneState.h"
 
 
@@ -48,6 +49,10 @@ caf::behavior ZoneSupervisorState::make_behavior()
 	{
 		caf::aout(self) << "Zone Supervisor received enter_ingame_atom." << std::endl;
 		self->delegate(zoneSet[index], zone_move::enter_ingame_request_atom_v, playCharacter);
+	},
+		[this](battle::position_move_request_atom, PlayCharacter playCharacter)
+	{
+		self->delegate(zoneSet[index], battle::position_move_request_atom_v, playCharacter);
 	},
 	};
 }

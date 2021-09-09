@@ -7,6 +7,7 @@
 #include	"handler/LoginHandler.h"
 #include	"handler/ChatHandler.h"
 #include	"handler/LobbyHandler.h"
+#include	"handler/BattleHandler.h"
 
 
 class ClientState
@@ -34,6 +35,7 @@ private:
 	LoginHandler loginHandler;
 	ChatHandler chatHandler;
 	LobbyHandler lobbyHandler;
+	BattleHandler battleHandler;
 
 	User user;
 

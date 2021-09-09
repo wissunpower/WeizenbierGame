@@ -27,6 +27,8 @@ CAF_ADD_ATOM(server_launcher, character_delete_request_atom)
 CAF_ADD_ATOM(server_launcher, character_select_request_atom)
 CAF_ADD_ATOM(server_launcher, ingame_enter_request_atom)
 
+CAF_ADD_ATOM(server_launcher, position_move_request_atom)
+
 CAF_END_TYPE_ID_BLOCK(server_launcher)
 
 

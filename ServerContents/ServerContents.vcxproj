@@ -168,6 +168,7 @@
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="model\PlayCharacter.cpp" />
+    <ClCompile Include="model\Position.cpp" />
     <ClCompile Include="model\User.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

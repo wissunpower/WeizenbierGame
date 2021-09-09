@@ -156,6 +156,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="actorstate\ZoneState.h" />
+    <ClInclude Include="atomdef\Battle.h" />
     <ClInclude Include="atomdef\ZoneMove.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="manager\ZoneSupervisor.h" />

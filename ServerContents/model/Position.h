@@ -1,6 +1,8 @@
 #pragma once
 
 
+#include	<iostream>
+
 #include	"../pch.h"
 
 #include	"model.pb.h"
@@ -12,6 +14,10 @@
 //	float pointY;
 //	float pointZ;
 //};
+
+
+bool DECLSPEC operator==(const wzbgame::model::Position& left, const wzbgame::model::Position& right);
+std::ostream& operator<<(std::ostream& os, const wzbgame::model::Position& position);
 
 
 namespace caf

@@ -45,6 +45,9 @@
     <ClInclude Include="atomdef\ZoneMove.h">
       <Filter>헤더 파일\atomdef</Filter>
     </ClInclude>
+    <ClInclude Include="atomdef\Battle.h">
+      <Filter>헤더 파일\atomdef</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">

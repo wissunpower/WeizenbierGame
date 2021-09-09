@@ -145,6 +145,7 @@
   <ItemGroup>
     <ClCompile Include="CAF_Atom.cpp" />
     <ClCompile Include="ClientState.cpp" />
+    <ClCompile Include="handler\BattleHandler.cpp" />
     <ClCompile Include="handler\ChatHandler.cpp" />
     <ClCompile Include="handler\LobbyHandler.cpp" />
     <ClCompile Include="handler\LoginHandler.cpp" />
@@ -154,6 +155,7 @@
   <ItemGroup>
     <ClInclude Include="CAF_Atom.h" />
     <ClInclude Include="ClientState.h" />
+    <ClInclude Include="handler\BattleHandler.h" />
     <ClInclude Include="handler\ChatHandler.h" />
     <ClInclude Include="handler\LobbyHandler.h" />
     <ClInclude Include="handler\LoginHandler.h" />

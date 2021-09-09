@@ -68,5 +68,8 @@
     <ClCompile Include="model\User.cpp">
       <Filter>소스 파일\model</Filter>
     </ClCompile>
+    <ClCompile Include="model\Position.cpp">
+      <Filter>소스 파일\model</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

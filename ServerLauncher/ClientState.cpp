@@ -25,6 +25,7 @@ ClientState::ClientState(caf::event_based_actor* self, caf::io::connection_handl
 	, loginHandler(self, user)
 	, chatHandler(self, user)
 	, lobbyHandler(self, user)
+	, battleHandler(self, user)
 {
 	// nop
 }
@@ -40,6 +41,7 @@ caf::behavior ClientState::make_behavior()
 		caf::message_handler{ loginHandler.GetMessageHandler() }
 		.or_else(chatHandler.GetMessageHandler())
 		.or_else(lobbyHandler.GetMessageHandler())
+		.or_else(battleHandler.GetMessageHandler())
 		.or_else(caf::message_handler{
 		[this](send_to_client_atom, std::string stream)
 	{
