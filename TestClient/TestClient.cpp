@@ -38,6 +38,9 @@ CAF_BEGIN_TYPE_ID_BLOCK(test_client, first_custom_type_id)
     CAF_ADD_ATOM(test_client, ingame_enter_request_atom)
     CAF_ADD_ATOM(test_client, ingame_enter_response_atom)
 
+    CAF_ADD_ATOM(test_client, position_move_request_atom)
+    CAF_ADD_ATOM(test_client, position_move_response_atom)
+
 
     CAF_ADD_TYPE_ID(test_client, (wzbgame::model::Position))
 
@@ -216,6 +219,22 @@ caf::behavior HandleMessage(caf::stateful_actor<ClientInfo>* self)
 
         return caf::make_message();
     },
+        [=](position_move_request_atom)
+    {
+        caf::aout(self) << "Try Play Character Move." << std::endl;
+
+        wzbgame::message::battle::PositionMoveRequest p;
+        auto wrapped = MakeWrappedMessage(wzbgame::message::MessageType::PositionMoveRequest, p);
+
+        return caf::make_message(send_to_server_atom_v, wrapped.SerializeAsString());
+    },
+        [=](position_move_response_atom, int result, wzbgame::model::Position startingPosition)
+    {
+        caf::aout(self) << "Position Move Result : " << result << std::endl;
+        caf::aout(self) << "Current Position -> X : " << startingPosition.point_x() << ", Y : " << startingPosition.point_y() << ", Z : " << startingPosition.point_z() << std::endl;
+
+        return caf::make_message();
+    },
     };
 }
 
@@ -354,6 +373,14 @@ void TransferNetworkMessage(caf::io::broker* self, caf::io::connection_handle hd
         }
         break;
 
+        case wzbgame::message::PositionMoveResponse:
+        {
+            wzbgame::message::battle::PositionMoveResponse pm;
+            p.message().UnpackTo(&pm);
+            self->send(buddy, position_move_response_atom_v, pm.result(), pm.position());
+        }
+        break;
+
         //case wzbgame::message::UnknownMessageType:
         default:
 		{
@@ -485,6 +512,10 @@ void RunClient(caf::actor_system& system, const config& cfg)
             {
                 caf::send_as(*messageTransferActor, messageHandleActor, ingame_enter_request_atom_v, words[1]);
             }
+            else if (words.size() >= 1 && words[0] == "/posmove")
+            {
+                caf::send_as(*messageTransferActor, messageHandleActor, position_move_request_atom_v);
+            }
             else
 			{
 				std::cout << "*** available commands : \n"
@@ -493,6 +524,7 @@ void RunClient(caf::actor_system& system, const config& cfg)
                     "\t/chardelete        delete character\n"
                     "\t/charselect        select character\n"
                     "\t/ingameenter       enter ingame\n"
+                    "\t/posmove           move play character\n"
                     "\t/help              print this text\n";
 			}
 		}
