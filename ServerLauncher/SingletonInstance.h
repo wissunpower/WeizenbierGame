@@ -23,6 +23,18 @@ public:
 		return 0;
 	}
 
+	int ReleaseActor(caf::io::connection_handle hdl)
+	{
+		auto actorIter = m_actorMap.find(hdl);
+
+		if (actorIter != m_actorMap.end())
+		{
+			m_actorMap.erase(hdl);
+		}
+
+		return 0;
+	}
+
 	std::map<caf::io::connection_handle, caf::actor>& GetActorMap()
 	{
 		return m_actorMap;

@@ -158,6 +158,13 @@ caf::behavior server(caf::io::broker* self)
 		//self->quit();
 	};
 
+	auto connectionClosedHandler = [=](const caf::io::connection_closed_msg& msg)
+	{
+		caf::aout(self) << "connection closed" << std::endl;
+
+		GlobalContextInstance->ReleaseActor(msg.handle);
+	};
+
 	auto broadcastHandler = [=](broadcast_atom, std::string stream)
 	{
 		auto brokerActorMap = GlobalContextInstance->GetActorMap();
@@ -181,7 +188,7 @@ caf::behavior server(caf::io::broker* self)
 		self->send(brokerIter->second, send_to_client_atom_v, stream);
 	};
 
-	return { newConnectionHandler, broadcastHandler, sendClientPacketHandler, };
+	return { newConnectionHandler, connectionClosedHandler, broadcastHandler, sendClientPacketHandler, };
 }
 
 
