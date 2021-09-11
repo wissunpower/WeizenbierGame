@@ -65,8 +65,8 @@ caf::behavior ZoneState::make_behavior()
 		playCharacter.SetPosition(locatableStartingPosition);
 
 		std::shared_ptr<PlayCharacter> currentCharacter(new PlayCharacter{ playCharacter });
-		gameObjectList.push_back(currentCharacter);
-		gameMoveableObjectList.push_back(currentCharacter);
+		gameObjectList.insert(std::make_pair(currentCharacter->GetSN(), currentCharacter));
+		gameMoveableObjectList.insert(std::make_pair(currentCharacter->GetSN(), currentCharacter));
 
 		return caf::make_message(zone_move::enter_ingame_response_atom_v, locatableStartingPosition);
 	},
@@ -79,7 +79,7 @@ caf::behavior ZoneState::make_behavior()
 
 		try
 		{
-			auto currentCharacter = GetGameMoveableObject(0);
+			auto currentCharacter = GetGameMoveableObject(playCharacter.GetSN());
 			if (currentCharacter == nullptr)
 			{
 				throw WZB_CONTENTS_EXCEPTION_RM(ResultType::NotFoundCharacter, "Not Found Character -> Character Name : " + playCharacter.GetName());
@@ -143,24 +143,26 @@ caf::behavior ZoneState::make_behavior()
 
 std::shared_ptr<ILocatable> ZoneState::GetGameObject(long serialNumber) const
 {
-	if (gameObjectList.empty())
+	auto gameObject = gameObjectList.find(serialNumber);
+
+	if (gameObject == gameObjectList.end())
 	{
 		return nullptr;
 	}
 
-	// TODO : serialNumber 을 바탕으로 제대로된 대상을 반환하도록 수정.
-	return gameObjectList.front();
+	return gameObject->second;
 }
 
 std::shared_ptr<IMoveable> ZoneState::GetGameMoveableObject(long serialNumber) const
 {
-	if (gameMoveableObjectList.empty())
+	auto gameMoveableObject = gameMoveableObjectList.find(serialNumber);
+
+	if (gameMoveableObject == gameMoveableObjectList.end())
 	{
 		return nullptr;
 	}
 
-	// TODO : serialNumber 을 바탕으로 제대로된 대상을 반환하도록 수정.
-	return gameMoveableObjectList.front();
+	return gameMoveableObject->second;
 }
 
 std::map< float, std::map< float, std::map< float, bool > > > ZoneState::GetAllObjectPositionMap() const
@@ -170,12 +172,12 @@ std::map< float, std::map< float, std::map< float, bool > > > ZoneState::GetAllO
 	// 다른 대상들이 선점하고 있는 위치를 취합한다.
 	for (auto gameObjectIter = gameObjectList.begin(); gameObjectIter != gameObjectList.end(); ++gameObjectIter)
 	{
-		if (gameObjectIter->get() == nullptr)
+		if (gameObjectIter->second == nullptr)
 		{
 			continue;
 		}
 
-		const auto& currentPosition = gameObjectIter->get()->GetPosition();
+		const auto& currentPosition = gameObjectIter->second->GetPosition();
 
 		positionMap[currentPosition.point_x()][currentPosition.point_y()][currentPosition.point_z()] = true;
 	}

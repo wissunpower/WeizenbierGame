@@ -17,7 +17,7 @@ class DECLSPEC User
 public:
 	User();
 
-	ResultType CreatePlayCharacter(const std::string& characterName);
+	ResultType CreatePlayCharacter(const long serialNumber, const std::string& characterName);
 	ResultType DeletePlayCharacter(const std::string& characterName);
 
 	PlayCharacter& SelectPlayCharacter(const std::string& characterName);

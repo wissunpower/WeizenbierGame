@@ -65,6 +65,8 @@ caf::message_handler BattleHandler::GetMessageHandler() const
 				self->send(self, send_to_client_atom_v, wrapped.SerializeAsString());
 			}
 			);
+
+			resultValue = wzbgame::type::result::Succeed;
 		}
 		catch (const WzbContentsException& e)
 		{

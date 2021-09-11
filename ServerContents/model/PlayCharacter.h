@@ -19,6 +19,16 @@ public:
 
 public:
 
+	long GetSN() const
+	{
+		return SN;
+	}
+
+	void SetSN(const long sn)
+	{
+		SN = sn;
+	}
+
 	std::string GetName() const
 	{
 		return name;
@@ -41,6 +51,7 @@ public:
 
 private:
 
+	long SN;	// serial number
 	std::string name;
 	wzbgame::model::Position position;
 

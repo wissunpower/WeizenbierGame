@@ -37,6 +37,15 @@
     <Filter Include="헤더 파일\def">
       <UniqueIdentifier>{d63ca050-8b79-4db9-ada9-64d4e7a127cc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="헤더 파일\manager">
+      <UniqueIdentifier>{cb152065-8856-484d-8bef-dee3b5db2967}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\manager">
+      <UniqueIdentifier>{dd31905b-5982-4959-8ab2-1d2c1c9ccf97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\def\atom">
+      <UniqueIdentifier>{010c4e34-8d00-448b-bb0c-f622d67388cf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -72,6 +81,12 @@
     <ClInclude Include="def\CafCustom.h">
       <Filter>헤더 파일\def</Filter>
     </ClInclude>
+    <ClInclude Include="manager\UniqueKeyGenerator.h">
+      <Filter>헤더 파일\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="def\atom\Certification.h">
+      <Filter>헤더 파일\def\atom</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -88,6 +103,9 @@
     </ClCompile>
     <ClCompile Include="model\exception\WzbContentsException.cpp">
       <Filter>소스 파일\model\exception</Filter>
+    </ClCompile>
+    <ClCompile Include="manager\UniqueKeyGenerator.cpp">
+      <Filter>소스 파일\manager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

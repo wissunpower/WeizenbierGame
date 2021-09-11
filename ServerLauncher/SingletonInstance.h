@@ -9,6 +9,10 @@ class ZoneSupervisor;
 
 extern ZoneSupervisor* ZoneSupervisorInstance;
 
+class UniqueKeyGenerator;
+
+extern UniqueKeyGenerator* UniqueKeyGeneratorInstance;
+
 
 class GlobalContext
 {

@@ -126,7 +126,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>..\caf\libcaf_core;..\caf\libcaf_io;..\protobuf\src;..\CommonType;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\caf\libcaf_core;..\caf\libcaf_io;..\protobuf\src;..\CommonType;.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -156,10 +156,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="config\ActorSystemConfig.h" />
+    <ClInclude Include="def\atom\Certification.h" />
     <ClInclude Include="def\CafCustom.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="helper\Convert.h" />
     <ClInclude Include="helper\IO.h" />
+    <ClInclude Include="manager\UniqueKeyGenerator.h" />
     <ClInclude Include="model\exception\WzbContentsException.h" />
     <ClInclude Include="model\exception\WzbException.h" />
     <ClInclude Include="model\exception\WzbSystemException.h" />
@@ -169,6 +171,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="manager\UniqueKeyGenerator.cpp" />
     <ClCompile Include="model\exception\WzbContentsException.cpp" />
     <ClCompile Include="model\exception\WzbException.cpp" />
     <ClCompile Include="model\exception\WzbSystemException.cpp" />

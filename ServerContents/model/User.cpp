@@ -11,7 +11,7 @@ User::User()
 {
 }
 
-ResultType User::CreatePlayCharacter(const std::string& characterName)
+ResultType User::CreatePlayCharacter(const long serialNumber, const std::string& characterName)
 {
 	auto ownedCharacter = _playCharacterList.find(characterName);
 
@@ -19,6 +19,7 @@ ResultType User::CreatePlayCharacter(const std::string& characterName)
 		throw WZB_CONTENTS_EXCEPTION_R(wzbgame::type::result::AlreadyExistCharacter);
 
 	PlayCharacter playCharacter;
+	playCharacter.SetSN(serialNumber);
 	playCharacter.SetName(characterName);
 
 	_playCharacterList.emplace(characterName, playCharacter);

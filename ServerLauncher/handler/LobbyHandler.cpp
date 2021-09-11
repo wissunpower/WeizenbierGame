@@ -9,7 +9,7 @@
 #endif
 
 CAF_PUSH_WARNINGS
-#include "WeizenbierProto.h"
+#include	"WeizenbierProto.h"
 CAF_POP_WARNINGS
 
 #include	"ServerUtility.h"
@@ -38,15 +38,29 @@ caf::message_handler LobbyHandler::GetMessageHandler() const
 		// 캐릭터 생성 요청 처리
 		[this](character_create_request_atom, std::string stream)
 	{
-		auto resultValue = wzbgame::type::result::UnknownFailure;
+		auto resultValue = ResultType::UnknownFailure;
 
 		try
 		{
 			auto message = ToActorMessageArg<wzbgame::message::lobby::CharacterCreateRequest>(stream);
 
 			// TODO : 캐릭터 아이디 중복 확인
-			
-			user.CreatePlayCharacter(message.character_id());
+
+			self->request(UniqueKeyGeneratorInstance->GetActor(), caf::infinite, certification::issue_uniquekey_request_atom_v).then(
+				[=, this](certification::issue_uniquekey_response_atom, int result, long issuedKey)
+			{
+				if (result == static_cast<int>(ResultType::Succeed))
+				{
+					user.CreatePlayCharacter(issuedKey, message.character_id());
+				}
+
+				wzbgame::message::lobby::CharacterCreateResponse response;
+				response.set_result(result);
+				wzbgame::message::WrappedMessage wrapped = MakeWrappedMessage(wzbgame::message::MessageType::CharacterCreateResponse, response);
+
+				self->send(self, send_to_client_atom_v, wrapped.SerializeAsString());
+			}
+			);
 
 			resultValue = wzbgame::type::result::Succeed;
 		}
@@ -56,11 +70,16 @@ caf::message_handler LobbyHandler::GetMessageHandler() const
 			caf::aout(self) << e.what() << std::endl;
 		}
 
-		wzbgame::message::lobby::CharacterCreateResponse response;
-		response.set_result(resultValue);
-		wzbgame::message::WrappedMessage wrapped = MakeWrappedMessage(wzbgame::message::MessageType::CharacterCreateResponse, response);
+		if (ResultType::Succeed != resultValue)
+		{
+			wzbgame::message::lobby::CharacterCreateResponse response;
+			response.set_result(resultValue);
+			wzbgame::message::WrappedMessage wrapped = MakeWrappedMessage(wzbgame::message::MessageType::CharacterCreateResponse, response);
 
-		return caf::make_message(send_to_client_atom_v, wrapped.SerializeAsString());
+			return caf::make_message(send_to_client_atom_v, wrapped.SerializeAsString());
+		}
+
+		return caf::make_message();
 	},
 
 		// 캐릭터 삭제 요청 처리

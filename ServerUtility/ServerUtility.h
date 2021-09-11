@@ -1,6 +1,9 @@
 #pragma once
 
 
+#include	"def/CafCustom.h"
+#include	"def/atom/Certification.h"
+
 #include	"model/exception/WzbException.h"
 #include	"model/exception/WzbContentsException.h"
 #include	"model/exception/WzbSystemException.h"
@@ -11,3 +14,5 @@
 
 #include	"helper/Convert.h"
 #include	"helper/IO.h"
+
+#include	"manager/UniqueKeyGenerator.h"

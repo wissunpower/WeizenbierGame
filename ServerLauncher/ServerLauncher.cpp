@@ -185,6 +185,12 @@ caf::behavior server(caf::io::broker* self)
 }
 
 
+void InitializeCertificationSystem(caf::actor_system& system, const ActorSystemConfig& cfg)
+{
+	auto uniqueKeyGeneratorActor = system.spawn<UniqueKeyGeneratorActor>();
+	UniqueKeyGeneratorInstance->SetActor(uniqueKeyGeneratorActor);
+}
+
 void InitializeZoneSystem(caf::actor_system& system, const ActorSystemConfig& cfg)
 {
 	auto zoneSupervisorActor = system.spawn<ZoneSupervisorActor>();
@@ -215,6 +221,8 @@ void RunServer(caf::actor_system& system, const ActorSystemConfig& cfg)
 
 void caf_main(caf::actor_system& system, const ActorSystemConfig& cfg)
 {
+	InitializeCertificationSystem(system, cfg);
+
 	InitializeZoneSystem(system, cfg);
 
 	RunServer(system, cfg);
@@ -225,6 +233,7 @@ CAF_MAIN(
 	caf::id_block::contents_entity,
 	caf::id_block::zone_move,
 	caf::id_block::battle,
+	caf::id_block::certification,
 	caf::io::middleman)
 
 // 프로그램 실행: <Ctrl+F5> 또는 [디버그] > [디버깅하지 않고 시작] 메뉴

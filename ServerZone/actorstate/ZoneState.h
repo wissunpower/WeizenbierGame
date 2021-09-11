@@ -35,8 +35,8 @@ private:
 
 	caf::event_based_actor* self;
 
-	std::vector<std::shared_ptr<ILocatable>> gameObjectList;
-	std::vector<std::shared_ptr<IMoveable>> gameMoveableObjectList;
+	std::map<long, std::shared_ptr<ILocatable>> gameObjectList;
+	std::map<long, std::shared_ptr<IMoveable>> gameMoveableObjectList;
 
 };
 
