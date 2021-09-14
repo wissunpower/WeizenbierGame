@@ -143,7 +143,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BotBrokerImpl.cpp" />
+    <ClCompile Include="BotState.cpp" />
     <ClCompile Include="TestClient.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AtomDef.h" />
+    <ClInclude Include="BotBrokerImpl.h" />
+    <ClInclude Include="BotState.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -16,35 +16,9 @@ CAF_PUSH_WARNINGS
 #include "WeizenbierProto.h"
 CAF_POP_WARNINGS
 
-
-CAF_BEGIN_TYPE_ID_BLOCK(test_client, first_custom_type_id)
-
-    CAF_ADD_ATOM(test_client, send_to_server_atom)
-
-    CAF_ADD_ATOM(test_client, chat_request_atom)
-    CAF_ADD_ATOM(test_client, chat_response_atom)
-    CAF_ADD_ATOM(test_client, chat_notification_atom)
-
-    CAF_ADD_ATOM(test_client, login_request_atom)
-    CAF_ADD_ATOM(test_client, login_response_atom)
-
-    CAF_ADD_ATOM(test_client, character_create_request_atom)
-    CAF_ADD_ATOM(test_client, character_create_response_atom)
-    CAF_ADD_ATOM(test_client, character_delete_request_atom)
-    CAF_ADD_ATOM(test_client, character_delete_response_atom)
-    CAF_ADD_ATOM(test_client, character_select_request_atom)
-    CAF_ADD_ATOM(test_client, character_select_response_atom)
-
-    CAF_ADD_ATOM(test_client, ingame_enter_request_atom)
-    CAF_ADD_ATOM(test_client, ingame_enter_response_atom)
-
-    CAF_ADD_ATOM(test_client, position_move_request_atom)
-    CAF_ADD_ATOM(test_client, position_move_response_atom)
-
-
-    CAF_ADD_TYPE_ID(test_client, (wzbgame::model::Position))
-
-CAF_END_TYPE_ID_BLOCK(test_client)
+#include "AtomDef.h"
+#include "BotState.h"
+#include "BotBrokerImpl.h"
 
 
 namespace caf
@@ -133,10 +107,6 @@ caf::behavior HandleMessage(caf::stateful_actor<ClientInfo>* self)
     {
         caf::aout(self) << accountID << " : " << chatMessage << std::endl;
         
-        return caf::make_message();
-    },
-        [=](login_response_atom, int result)
-    {
         return caf::make_message();
     },
         [=](login_request_atom, std::string accountID)
@@ -428,17 +398,19 @@ class config : public caf::actor_system_config
 public:
     uint16_t port = 0;
     std::string host = "localhost";
+    int botCount = 0;   // 1 이상이면 봇 실행 모드로 동작
 
     config()
     {
         opt_group{ custom_options_, "global" }
             .add(port, "port,p", "set port")
-            .add(host, "host,H", "set host");
+            .add(host, "host,H", "set host")
+            .add(botCount, "bot,b", "set bot count");
     }
 };
 
 
-void RunClient(caf::actor_system& system, const config& cfg)
+void RunTestMode(caf::actor_system& system, const config& cfg)
 {
     std::cout << "run test client" << std::endl;
 
@@ -478,24 +450,24 @@ void RunClient(caf::actor_system& system, const config& cfg)
 
 
     std::cout << "*** starting client, type '/help' for a list of commands\n";
-	std::istream_iterator<ChatMessage> eof;
-	std::vector<std::string> words;
+    std::istream_iterator<ChatMessage> eof;
+    std::vector<std::string> words;
 
-	for (std::istream_iterator<ChatMessage> input{ std::cin }; input != eof; ++input)
-	{
-		if (input->str.empty())
-		{
-			// Ignore empty lines.
-		}
-		else if (input->str[0] == '/')
-		{
-			words.clear();
-			split(words, input->str, caf::is_any_of(" "));
+    for (std::istream_iterator<ChatMessage> input{ std::cin }; input != eof; ++input)
+    {
+        if (input->str.empty())
+        {
+            // Ignore empty lines.
+        }
+        else if (input->str[0] == '/')
+        {
+            words.clear();
+            split(words, input->str, caf::is_any_of(" "));
 
-			if (words.size() == 1 && words[0] == "/quit")
-			{
-				std::cin.setstate(std::ios_base::eofbit);
-			}
+            if (words.size() == 1 && words[0] == "/quit")
+            {
+                std::cin.setstate(std::ios_base::eofbit);
+            }
             else if (words.size() >= 2 && words[0] == "/charcreate")
             {
                 caf::send_as(*messageTransferActor, messageHandleActor, character_create_request_atom_v, words[1]);
@@ -517,22 +489,64 @@ void RunClient(caf::actor_system& system, const config& cfg)
                 caf::send_as(*messageTransferActor, messageHandleActor, position_move_request_atom_v);
             }
             else
-			{
-				std::cout << "*** available commands : \n"
-					"\t/quit              quit the program\n"
+            {
+                std::cout << "*** available commands : \n"
+                    "\t/quit              quit the program\n"
                     "\t/charcreate        create character\n"
                     "\t/chardelete        delete character\n"
                     "\t/charselect        select character\n"
                     "\t/ingameenter       enter ingame\n"
                     "\t/posmove           move play character\n"
                     "\t/help              print this text\n";
-			}
-		}
-		else
+            }
+        }
+        else
+        {
+            caf::send_as(*messageTransferActor, messageHandleActor, chat_request_atom_v, input->str);
+        }
+    }
+}
+
+
+std::string GetAccountName()
+{
+    return std::string("botaccount_") + std::to_string(rand());
+}
+
+
+void RunBotLaunchMode(caf::actor_system& system, const config& cfg)
+{
+    std::cout << "run bot launcher" << std::endl;
+
+	for (int currentCount = 0; currentCount < cfg.botCount; ++currentCount)
+	{
+		auto botActor = system.spawn<BotActor>();
+		auto botBrokerActor = system.middleman().spawn_client(BotBrokerHandler, cfg.host, cfg.port, botActor);
+
+		if (!botBrokerActor)
 		{
-			caf::send_as(*messageTransferActor, messageHandleActor, chat_request_atom_v, input->str);
+			std::cout << "cannot connect to " << cfg.host << " at port" << cfg.port << " : " << caf::to_string(botBrokerActor.error()) << std::endl;
+			return;
 		}
+
+		std::string accountName = GetAccountName();
+		caf::send_as(*botBrokerActor, botActor, login_request_atom_v, accountName);
 	}
+}
+
+
+void RunClient(caf::actor_system& system, const config& cfg)
+{
+    srand(time(nullptr));
+
+    if (cfg.botCount > 0)
+    {
+        RunBotLaunchMode(system, cfg);
+    }
+    else
+    {
+        RunTestMode(system, cfg);
+    }
 }
 
 
