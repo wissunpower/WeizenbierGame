@@ -19,7 +19,15 @@ class GlobalContext
 public:
 	int RegisterActor(caf::io::connection_handle hdl, const caf::actor& actor)
 	{
+		auto actorIter = m_actorMap.find(hdl);
+
+		if (actorIter != m_actorMap.end())
+		{
+			m_actorMap.erase(actorIter);
+		}
+
 		m_actorMap.emplace(std::make_pair(hdl, actor));
+
 		return 0;
 	}
 
