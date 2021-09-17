@@ -17,11 +17,18 @@ public:
 	static inline const char* name = "BotState";
 
 
+public:
+
+	void RequestResponseInterval(int responseType);
+
+
 private:
 
 	caf::event_based_actor* self;
 
 	std::string currentCharacterName;
+
+	std::map<int, std::chrono::system_clock::time_point> responseIntervalMap;
 
 };
 

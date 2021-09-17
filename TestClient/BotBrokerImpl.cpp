@@ -20,7 +20,7 @@ void BotBrokerHandler(caf::io::broker* self, caf::io::connection_handle hdl, con
     self->attach_functor(
         [=](const caf::error& reason)
     {
-        caf::aout(self) << "bot broker handler" << " exited : " << caf::to_string(reason) << std::endl;
+        //caf::aout(self) << "bot broker handler" << " exited : " << caf::to_string(reason) << std::endl;
     }
     );
 
@@ -32,7 +32,7 @@ void BotBrokerHandler(caf::io::broker* self, caf::io::connection_handle hdl, con
     {
         if (dm.source == buddy)
         {
-            caf::aout(self) << "our buddy is down" << std::endl;
+            //caf::aout(self) << "our buddy is down" << std::endl;
             self->quit(dm.reason);
         }
     }

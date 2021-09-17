@@ -19,6 +19,8 @@ CAF_POP_WARNINGS
 #include "AtomDef.h"
 #include "BotState.h"
 #include "BotBrokerImpl.h"
+#include "GlobalInstance.h"
+#include "ResponseIntervalCollector.h"
 
 
 namespace caf
@@ -513,10 +515,19 @@ std::string GetAccountName()
     return std::string("botaccount_") + std::to_string(rand());
 }
 
+void InitializeEnvironment(caf::actor_system& system, const config& cfg)
+{
+    auto responseIntervalCollectorActor = system.spawn<ResponseIntervalCollectorActor>();
+    ResponseIntervalCollectorInstance->SetActor(responseIntervalCollectorActor);
+}
 
 void RunBotLaunchMode(caf::actor_system& system, const config& cfg)
 {
     std::cout << "run bot launcher" << std::endl;
+
+    InitializeEnvironment(system, cfg);
+
+    std::vector<caf::actor> botActorList(cfg.botCount * 2);
 
 	for (int currentCount = 0; currentCount < cfg.botCount; ++currentCount)
 	{
@@ -531,7 +542,38 @@ void RunBotLaunchMode(caf::actor_system& system, const config& cfg)
 
 		std::string accountName = GetAccountName();
 		caf::send_as(*botBrokerActor, botActor, login_request_atom_v, accountName);
+
+        botActorList.emplace_back(botActor);
 	}
+
+    std::istream_iterator<ChatMessage> eof;
+    std::vector<std::string> words;
+
+	for (std::istream_iterator<ChatMessage> input{ std::cin }; input != eof; ++input)
+	{
+		words.clear();
+		split(words, input->str, caf::is_any_of(" "));
+
+		if (words.size() == 1 && (words[0] == "quit" || words[0] == "exit" || words[0] == "bye"))
+		{
+            for (const auto& botActor : botActorList)
+            {
+                caf::send_as(botActor, botActor, self_shutdown_atom_v);
+            }
+
+            std::this_thread::sleep_for(std::chrono::milliseconds{ 100 });
+
+            caf::send_as(ResponseIntervalCollectorInstance->GetActor(), ResponseIntervalCollectorInstance->GetActor(), show_responseintervalresult_v);
+
+			std::cin.setstate(std::ios_base::eofbit);
+		}
+		//else
+		//{
+		//	std::cout << "*** available commands : \n"
+		//		"\t/quit              quit the program\n"
+		//		"\t/help              print this text\n";
+		//}
+    }
 }
 
 

@@ -4,6 +4,10 @@
 CAF_BEGIN_TYPE_ID_BLOCK(test_client, first_custom_type_id)
 
 CAF_ADD_ATOM(test_client, send_to_server_atom)
+CAF_ADD_ATOM(test_client, self_shutdown_atom)
+
+CAF_ADD_ATOM(test_client, add_responseinterval_atom)
+CAF_ADD_ATOM(test_client, show_responseintervalresult)
 
 CAF_ADD_ATOM(test_client, chat_request_atom)
 CAF_ADD_ATOM(test_client, chat_response_atom)
