@@ -34,7 +34,7 @@ caf::message_handler LoginHandler::GetMessageHandler() const
 	{
 		auto message = ToActorMessageArg<wzbgame::message::login::LoginRequest>(stream);
 
-		caf::aout(self) << "login account id : " << message.account_id() << std::endl;
+		WriteLog(self, "login account id : " + message.account_id());
 
 		user.SetAccountID(message.account_id());
 

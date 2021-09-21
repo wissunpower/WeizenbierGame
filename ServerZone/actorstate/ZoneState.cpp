@@ -35,7 +35,7 @@ caf::behavior ZoneState::make_behavior()
 	self->attach_functor(
 		[this]
 	{
-		caf::aout(self) << "worker " << 0 << " down" << std::endl;
+		WriteLog(self, "worker " + std::to_string(0) + " down");
 	}
 	);
 
@@ -52,8 +52,8 @@ caf::behavior ZoneState::make_behavior()
 		// 인게임 입장 요청 처리
 		[this](zone_move::enter_ingame_request_atom, PlayCharacter playCharacter)
 	{
-		caf::aout(self) << "Zone received enter_ingame_atom." << std::endl;
-		caf::aout(self) << "Entered Character Name : " << playCharacter.GetName() << std::endl;
+		WriteLog(self, "Zone received enter_ingame_atom.");
+		WriteLog(self, "Entered Character Name : " + playCharacter.GetName());
 
 		wzbgame::model::Position startingPosition;
 		startingPosition.set_point_x(0);
@@ -133,7 +133,7 @@ caf::behavior ZoneState::make_behavior()
 		catch (const WzbContentsException& e)
 		{
 			resultValue = static_cast<ResultType>(e.ResultCode);
-			caf::aout(self) << e.what() << std::endl;
+			WriteLog(self, e.what());
 		}
 
 		return caf::make_message(battle::position_move_response_atom_v, static_cast<int>(resultValue), nextPosition);

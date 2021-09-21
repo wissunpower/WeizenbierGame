@@ -14,5 +14,6 @@
 
 #include	"helper/Convert.h"
 #include	"helper/IO.h"
+#include	"helper/Log.h"
 
 #include	"manager/UniqueKeyGenerator.h"

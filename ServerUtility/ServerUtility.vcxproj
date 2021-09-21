@@ -161,6 +161,7 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="helper\Convert.h" />
     <ClInclude Include="helper\IO.h" />
+    <ClInclude Include="helper\Log.h" />
     <ClInclude Include="manager\UniqueKeyGenerator.h" />
     <ClInclude Include="model\exception\WzbContentsException.h" />
     <ClInclude Include="model\exception\WzbException.h" />
@@ -171,6 +172,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="helper\Log.cpp" />
     <ClCompile Include="manager\UniqueKeyGenerator.cpp" />
     <ClCompile Include="model\exception\WzbContentsException.cpp" />
     <ClCompile Include="model\exception\WzbException.cpp" />

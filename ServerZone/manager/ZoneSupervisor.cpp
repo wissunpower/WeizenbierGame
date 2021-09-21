@@ -4,6 +4,7 @@
 #include	"ZoneSupervisor.h"
 
 #include	"patterns/Singleton.h"
+#include	"helper/Log.h"
 
 #include	"atomdef/ContentsEntity.h"
 #include	"model/PlayCharacter.h"
@@ -34,7 +35,7 @@ caf::behavior ZoneSupervisorState::make_behavior()
 		if (i != zoneSet.end())
 		{
 			auto n = std::distance(zoneSet.begin(), i);
-			caf::aout(self) << "lost a zone " << n << " -> spawn replacement" << std::endl;
+			WriteLog(self, "lost a zone " + std::to_string(n) + " -> spawn replacement");
 			*i = self->spawn<ZoneActor, caf::linked>();
 		}
 	});
@@ -47,7 +48,7 @@ caf::behavior ZoneSupervisorState::make_behavior()
 	},
 		[this](zone_move::enter_ingame_request_atom, PlayCharacter playCharacter)
 	{
-		caf::aout(self) << "Zone Supervisor received enter_ingame_atom." << std::endl;
+		WriteLog(self, "Zone Supervisor received enter_ingame_atom.");
 		self->delegate(zoneSet[index], zone_move::enter_ingame_request_atom_v, playCharacter);
 	},
 		[this](battle::position_move_request_atom, PlayCharacter playCharacter)

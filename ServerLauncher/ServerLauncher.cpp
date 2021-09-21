@@ -35,7 +35,7 @@ void print_on_exit(caf::scheduled_actor* self, const std::string& name)
 	self->attach_functor(
 		[=](const caf::error& reason)
 	{
-		caf::aout(self) << name << " exited : " << caf::to_string(reason) << std::endl;
+		WriteLog(self, name + " exited : " + caf::to_string(reason));
 	}
 	);
 }
@@ -44,7 +44,7 @@ void print_on_exit(caf::scheduled_actor* self, const std::string& name)
 void TransferNetworkMessage(caf::io::broker* self, caf::io::connection_handle hdl, const caf::actor& buddy)
 {
 	print_on_exit(self, "protobuf_io");
-	caf::aout(self) << "protobuf broker started" << std::endl;
+	WriteLog(self, "protobuf broker started");
 
 	self->monitor(buddy);
 	self->set_down_handler(
@@ -52,7 +52,7 @@ void TransferNetworkMessage(caf::io::broker* self, caf::io::connection_handle hd
 	{
 		if (dm.source == buddy)
 		{
-			caf::aout(self) << "our buddy is down" << std::endl;
+			WriteLog(self, "our buddy is down");
 			self->quit(dm.reason);
 		}
 	}
@@ -69,7 +69,7 @@ void TransferNetworkMessage(caf::io::broker* self, caf::io::connection_handle hd
 	auto defaultCallbacks = caf::message_handler{
 		[=](const caf::io::connection_closed_msg&)
 	{
-		caf::aout(self) << "connection closed" << std::endl;
+		WriteLog(self, "connection closed");
 		self->send_exit(buddy, caf::exit_reason::remote_link_unreachable);
 		self->quit(caf::exit_reason::remote_link_unreachable);
 	},
@@ -120,7 +120,7 @@ void TransferNetworkMessage(caf::io::broker* self, caf::io::connection_handle hd
 	
 		if (num_bytes > (1024 * 1024))
 		{
-			caf::aout(self) << "someone is trying something nasty" << std::endl;
+			WriteLog(self, "someone is trying something nasty");
 			self->quit(caf::exit_reason::user_shutdown);
 			return;
 		}
@@ -141,11 +141,11 @@ void TransferNetworkMessage(caf::io::broker* self, caf::io::connection_handle hd
 caf::behavior server(caf::io::broker* self)
 {
 	print_on_exit(self, "server");
-	caf::aout(self) << "server is running" << std::endl;
+	WriteLog(self, "server is running");
 
 	auto newConnectionHandler = [=](const caf::io::new_connection_msg& msg)
 	{
-		caf::aout(self) << "server accepted new connection" << std::endl;
+		WriteLog(self, "server accepted new connection");
 
 		auto clientActor = self->system().spawn<ClientActor>(msg.handle);
 
@@ -160,7 +160,7 @@ caf::behavior server(caf::io::broker* self)
 
 	auto connectionClosedHandler = [=](const caf::io::connection_closed_msg& msg)
 	{
-		caf::aout(self) << "connection closed" << std::endl;
+		WriteLog(self, "connection closed");
 
 		GlobalContextInstance->ReleaseActor(msg.handle);
 	};

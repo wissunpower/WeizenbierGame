@@ -48,7 +48,7 @@ caf::message_handler BattleHandler::GetMessageHandler() const
 			self->request(ZoneSupervisorInstance->GetActor(), caf::infinite, battle::position_move_request_atom_v, currentCharacter).then(
 				[this](battle::position_move_response_atom, int result, wzbgame::model::Position nextPosition)
 			{
-				caf::aout(self) << "BattleHandler received position_move_response_atom." << std::endl;
+				WriteLog(self, "BattleHandler received position_move_response_atom.");
 
 				if (result == static_cast<int>(ResultType::Succeed))
 				{
@@ -71,7 +71,7 @@ caf::message_handler BattleHandler::GetMessageHandler() const
 		catch (const WzbContentsException& e)
 		{
 			resultValue = static_cast<ResultType>(e.ResultCode);
-			caf::aout(self) << e.what() << std::endl;
+			WriteLog(self, e.what());
 		}
 
 		if (ResultType::Succeed != resultValue)

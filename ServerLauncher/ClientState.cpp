@@ -32,7 +32,7 @@ ClientState::ClientState(caf::event_based_actor* self, caf::io::connection_handl
 
 ClientState::~ClientState()
 {
-	caf::aout(self) << "destroy ClientState" << std::endl;
+	WriteLog(self, "destroy ClientState");
 }
 
 caf::behavior ClientState::make_behavior()

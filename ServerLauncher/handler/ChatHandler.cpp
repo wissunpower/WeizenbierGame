@@ -34,7 +34,7 @@ caf::message_handler ChatHandler::GetMessageHandler() const
 		auto message = ToActorMessageArg<wzbgame::message::chat::ChatRequest>(stream);
 		auto chatMessage = message.message();
 
-		caf::aout(self) << "'response' " << chatMessage << std::endl;
+		WriteLog(self, "'response' " + chatMessage);
 
 		wzbgame::message::chat::ChatResponse response;
 		response.set_message(chatMessage);

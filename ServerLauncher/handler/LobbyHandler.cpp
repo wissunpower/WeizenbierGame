@@ -67,7 +67,7 @@ caf::message_handler LobbyHandler::GetMessageHandler() const
 		catch (const WzbContentsException& e)
 		{
 			resultValue = static_cast<ResultType>(e.ResultCode);
-			caf::aout(self) << e.what() << std::endl;
+			WriteLog(self, e.what());
 		}
 
 		if (ResultType::Succeed != resultValue)
@@ -98,7 +98,7 @@ caf::message_handler LobbyHandler::GetMessageHandler() const
 		catch (const WzbContentsException& e)
 		{
 			resultValue = static_cast<ResultType>(e.ResultCode);
-			caf::aout(self) << e.what() << std::endl;
+			WriteLog(self, e.what());
 		}
 
 		wzbgame::message::lobby::CharacterDeleteResponse response;
@@ -124,7 +124,7 @@ caf::message_handler LobbyHandler::GetMessageHandler() const
 		catch (const WzbContentsException & e)
 		{
 			resultValue = static_cast<ResultType>(e.ResultCode);
-			caf::aout(self) << e.what() << std::endl;
+			WriteLog(self, e.what());
 		}
 
 		wzbgame::message::lobby::CharacterSelectResponse response;
@@ -146,7 +146,7 @@ caf::message_handler LobbyHandler::GetMessageHandler() const
 			self->request(ZoneSupervisorInstance->GetActor(), caf::infinite, zone_move::enter_ingame_request_atom_v, user.GetCurrentPlayCharacter()).then(
 				[this](zone_move::enter_ingame_response_atom, wzbgame::model::Position startingPosition)
 			{
-				caf::aout(self) << "LobbyHandler received enter_ingame_response_atom." << std::endl;
+				WriteLog(self, "LobbyHandler received enter_ingame_response_atom.");
 
 				wzbgame::message::lobby::InGameEnterResponse response;
 				response.set_result(ResultType::Succeed);
@@ -164,7 +164,7 @@ caf::message_handler LobbyHandler::GetMessageHandler() const
 		catch (const WzbContentsException& e)
 		{
 			resultValue = static_cast<ResultType>(e.ResultCode);
-			caf::aout(self) << e.what() << std::endl;
+			WriteLog(self, e.what());
 		}
 
 		if (ResultType::Succeed != resultValue)
