@@ -51,6 +51,11 @@ PlayCharacter& User::SelectPlayCharacter(const std::string& characterName)
 	return _selectedCharacterIter->second;
 }
 
+bool User::HasSelectedCharacter() const
+{
+	return _selectedCharacterIter != _playCharacterList.end();
+}
+
 PlayCharacter& User::GetCurrentPlayCharacter() const
 {
 	if (_selectedCharacterIter == _playCharacterList.end())

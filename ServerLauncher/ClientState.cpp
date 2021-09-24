@@ -9,10 +9,15 @@
 #endif
 
 CAF_PUSH_WARNINGS
-#include "WeizenbierProto.h"
+#include	"WeizenbierProto.h"
 CAF_POP_WARNINGS
 
 #include	"ServerUtility.h"
+
+#include	"ServerContents.h"
+
+#include	"atomdef/ZoneMove.h"
+#include	"manager/ZoneSupervisor.h"
 
 #include	"ClientState.h"
 #include	"CAF_Atom.h"
@@ -32,6 +37,11 @@ ClientState::ClientState(caf::event_based_actor* self, caf::io::connection_handl
 
 ClientState::~ClientState()
 {
+	if (user.HasSelectedCharacter())
+	{
+		self->request(ZoneSupervisorInstance->GetActor(), caf::infinite, zone_move::leave_ingame_request_atom_v, user.GetCurrentPlayCharacter());
+	}
+
 	WriteLog(self, "destroy ClientState");
 }
 

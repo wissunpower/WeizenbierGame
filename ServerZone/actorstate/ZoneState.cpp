@@ -71,6 +71,26 @@ caf::behavior ZoneState::make_behavior()
 		return caf::make_message(zone_move::enter_ingame_response_atom_v, locatableStartingPosition);
 	},
 
+		// 인게임 퇴장 요청 처리
+		[this](zone_move::leave_ingame_request_atom, PlayCharacter playCharacter)
+	{
+		auto gameMoveableObjectIter = gameMoveableObjectList.find(playCharacter.GetSN());
+
+		if (gameMoveableObjectIter != gameMoveableObjectList.end())
+		{
+			gameMoveableObjectList.erase(gameMoveableObjectIter);
+		}
+
+		auto gameObjectIter = gameObjectList.find(playCharacter.GetSN());
+
+		if (gameObjectIter != gameObjectList.end())
+		{
+			gameObjectList.erase(gameObjectIter);
+		}
+
+		return caf::make_message();
+	},
+
 		// 캐릭터 위치 이동 요청 처리
 		[this](battle::position_move_request_atom, PlayCharacter playCharacter)
 	{

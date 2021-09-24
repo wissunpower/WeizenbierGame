@@ -21,6 +21,7 @@ public:
 	ResultType DeletePlayCharacter(const std::string& characterName);
 
 	PlayCharacter& SelectPlayCharacter(const std::string& characterName);
+	bool HasSelectedCharacter() const;
 	PlayCharacter& GetCurrentPlayCharacter() const;
 
 public:

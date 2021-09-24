@@ -51,6 +51,10 @@ caf::behavior ZoneSupervisorState::make_behavior()
 		WriteLog(self, "Zone Supervisor received enter_ingame_atom.");
 		self->delegate(zoneSet[index], zone_move::enter_ingame_request_atom_v, playCharacter);
 	},
+		[this](zone_move::leave_ingame_request_atom, PlayCharacter playCharacter)
+	{
+		self->delegate(zoneSet[index], zone_move::leave_ingame_request_atom_v, playCharacter);
+	},
 		[this](battle::position_move_request_atom, PlayCharacter playCharacter)
 	{
 		self->delegate(zoneSet[index], battle::position_move_request_atom_v, playCharacter);
