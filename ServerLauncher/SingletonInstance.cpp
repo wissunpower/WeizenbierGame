@@ -1,5 +1,5 @@
 
-#include	"caf//all.hpp"
+#include	"caf/all.hpp"
 
 #include	"patterns/Singleton.h"
 #include	"manager/UniqueKeyGenerator.h"

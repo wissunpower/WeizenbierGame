@@ -14,9 +14,15 @@
 .vs/
 *.user
 CommonType/x64/Debug/*
+CommonType/x64/Release/*
 ServerLauncher/x64/Debug/*
+ServerLauncher/x64/Release/*
 ServerUtility/x64/Debug/*
+ServerUtility/x64/Release/*
 ServerZone/x64/Debug/*
+ServerZone/x64/Release/*
 ServerContents/x64/Debug/*
+ServerContents/x64/Release/*
 TestClient/x64/Debug/*
+TestClient/x64/Release/*
 *.lastcodeanalysissucceeded
