@@ -47,7 +47,7 @@ caf::message_handler LobbyHandler::GetMessageHandler() const
 			// TODO : 캐릭터 아이디 중복 확인
 
 			self->request(UniqueKeyGeneratorInstance->GetActor(), caf::infinite, certification::issue_uniquekey_request_atom_v).then(
-				[=, this](certification::issue_uniquekey_response_atom, int result, long issuedKey)
+				[this, message=message](certification::issue_uniquekey_response_atom, int result, long issuedKey)
 			{
 				if (result == static_cast<int>(ResultType::Succeed))
 				{
